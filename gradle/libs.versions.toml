@@ -172,7 +172,6 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 # Plugins defined by this project
 geminiChat-android-application = { id = "geminiChat.android.application", version = "unspecified" }
 geminiChat-android-application-compose = { id = "geminiChat.android.application.compose", version = "unspecified" }
-geminiChat-android-application-firebase = { id = "geminiChat.android.application.firebase", version = "unspecified" }
 geminiChat-android-application-flavors = { id = "geminiChat.android.application.flavors", version = "unspecified" }
 geminiChat-android-application-jacoco = { id = "geminiChat.android.application.jacoco", version = "unspecified" }
 geminiChat-android-feature = { id = "geminiChat.android.feature", version = "unspecified" }
