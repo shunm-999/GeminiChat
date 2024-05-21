@@ -1,4 +1,4 @@
-package com.shunm.geminichat.ui.theme
+package com.shunm.common_compose.theme
 
 import androidx.compose.ui.graphics.Color
 

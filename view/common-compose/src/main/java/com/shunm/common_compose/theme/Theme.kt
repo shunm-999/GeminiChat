@@ -1,6 +1,5 @@
-package com.shunm.geminichat.ui.theme
+package com.shunm.common_compose.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
