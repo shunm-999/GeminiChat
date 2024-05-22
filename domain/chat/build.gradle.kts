@@ -15,6 +15,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain:common"))
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
 }
