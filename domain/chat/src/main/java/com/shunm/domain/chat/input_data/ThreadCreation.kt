@@ -4,5 +4,5 @@ import com.shunm.domain.chat.model.ThreadId
 
 data class ThreadCreation(
     val id: ThreadId,
-    val title: String
+    val title: String,
 )

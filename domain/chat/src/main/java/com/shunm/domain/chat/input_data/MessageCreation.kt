@@ -6,5 +6,5 @@ import com.shunm.domain.chat.model.ThreadId
 data class MessageCreation(
     val threadId: ThreadId,
     val text: String,
-    val image: Bitmap? = null
+    val image: Bitmap? = null,
 )

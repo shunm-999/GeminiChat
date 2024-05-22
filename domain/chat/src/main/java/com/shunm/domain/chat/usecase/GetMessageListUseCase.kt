@@ -6,16 +6,16 @@ import com.shunm.domain.common.Suspend
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetMessageListUseCase @Inject constructor(
-    private val messageRepository: MessageRepository
-) {
-    operator fun invoke(
-        threadId: Int
-    ): Flow<List<Message>> = messageRepository.getMessageFlow(threadId)
+class GetMessageListUseCase
+    @Inject
+    constructor(
+        private val messageRepository: MessageRepository,
+    ) {
+        operator fun invoke(threadId: Int): Flow<List<Message>> = messageRepository.getMessageFlow(threadId)
 
-    suspend operator fun invoke(
-        @Suppress("UNUSED_PARAMETER")
-        suspended: Suspend, threadId: Int
-    ): List<Message> = messageRepository.getMessages(threadId)
-
-}
+        suspend operator fun invoke(
+            @Suppress("UNUSED_PARAMETER")
+            suspended: Suspend,
+            threadId: Int,
+        ): List<Message> = messageRepository.getMessages(threadId)
+    }

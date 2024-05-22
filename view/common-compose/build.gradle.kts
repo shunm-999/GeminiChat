@@ -34,4 +34,3 @@ dependencies {
 
     androidTestImplementation(libs.androidx.compose.ui.test)
 }
-

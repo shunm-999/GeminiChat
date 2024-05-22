@@ -17,10 +17,11 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.shunm.build_logic.configureGradleManagedDevices
 import com.shunm.build_logic.configureKotlinAndroid
+import com.shunm.build_logic.libs
+import com.shunm.build_logic.pluginId
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import com.shunm.build_logic.libs
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -28,6 +29,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
+                apply(libs.pluginId("ktlint-gradle"))
                 apply("geminiChat.android.lint")
                 apply("com.dropbox.dependency-guard")
             }

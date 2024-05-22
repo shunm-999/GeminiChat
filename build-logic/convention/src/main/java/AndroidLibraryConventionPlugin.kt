@@ -25,6 +25,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
 import com.shunm.build_logic.libs
+import com.shunm.build_logic.pluginId
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -32,6 +33,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
+                apply(libs.pluginId("ktlint-gradle"))
                 apply("geminiChat.android.lint")
             }
 
