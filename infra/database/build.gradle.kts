@@ -11,7 +11,12 @@ android {
     namespace = "com.shunm.infra.database"
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     implementation(project(":domain:common"))
+    implementation(project(":domain:chat"))
     implementation(libs.kotlinx.datetime)
 }
