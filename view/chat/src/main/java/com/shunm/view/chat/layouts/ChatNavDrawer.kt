@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -15,6 +16,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -82,12 +84,18 @@ internal fun ChatNavigationDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            val scope =
-                remember {
-                    DrawerContentScopeImpl()
+            ModalDrawerSheet {
+                val scope =
+                    remember {
+                        DrawerContentScopeImpl()
+                    }
+                scope.drawerContent()
+                Surface(
+                    modifier = Modifier.fillMaxHeight(),
+                ) {
+                    scope.Compose()
                 }
-            scope.drawerContent()
-            scope.Compose()
+            }
         },
         content = content,
     )
