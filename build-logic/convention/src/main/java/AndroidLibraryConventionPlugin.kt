@@ -34,6 +34,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
                 apply(libs.pluginId("ktlint-gradle"))
+                apply("kotlinx-serialization")
                 apply("geminiChat.android.lint")
             }
 
@@ -50,9 +51,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 disableUnnecessaryAndroidTests(target)
             }
             dependencies {
-                add("testImplementation", kotlin("test"))
-
+                add("implementation",libs.findLibrary("kotlinx.datetime").get())
+                add("implementation",libs.findLibrary("kotlinx.serialization.core").get())
+                add("implementation",libs.findLibrary("kotlinx.serialization.json").get())
                 add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
+                add("testImplementation", kotlin("test"))
             }
         }
     }

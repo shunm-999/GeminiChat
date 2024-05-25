@@ -27,8 +27,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.shunm.common_compose.theme.GeminiChatTheme
 import com.shunm.domain.chat.model.Message
+import com.shunm.domain.chat.model.MessageId
 import com.shunm.domain.chat.model.User
 import com.shunm.view.chat.R
+import kotlinx.datetime.Instant
 
 @Composable
 internal fun MessageTile(
@@ -168,6 +170,7 @@ private fun MessageTilePreview() {
         MessageTile(
             message =
                 Message(
+                    id = MessageId(1),
                     sender =
                         Message.Sender.User(
                             User(
@@ -175,6 +178,7 @@ private fun MessageTilePreview() {
                             ),
                         ),
                     text = "Hello, World!",
+                    createAt = Instant.DISTANT_PAST,
                 ),
         )
     }

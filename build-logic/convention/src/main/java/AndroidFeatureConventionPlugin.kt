@@ -26,6 +26,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("geminiChat.android.library")
+                apply("geminiChat.android.library.compose")
                 apply("geminiChat.android.hilt")
             }
             extensions.configure<LibraryExtension> {
@@ -39,6 +40,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", project(":view:common-compose"))
 
                 add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
+                add("implementation", libs.findLibrary("androidx.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
                 add("implementation", libs.findLibrary("androidx.tracing.ktx").get())

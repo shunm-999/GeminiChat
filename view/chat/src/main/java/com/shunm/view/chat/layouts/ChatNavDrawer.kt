@@ -1,0 +1,135 @@
+package com.shunm.view.chat.layouts
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.view.chat.R
+
+internal interface DrawerContentScope {
+    fun header(header: @Composable DrawerContentHeaderScope.() -> Unit)
+
+    fun navigationItem(
+        label: @Composable DrawerContentItemScope.() -> Unit,
+        icon: (@Composable DrawerContentItemScope.() -> Unit)? = null,
+        onClick: () -> Unit,
+    )
+}
+
+internal object DrawerContentHeaderScope
+
+internal object DrawerContentItemScope
+
+private class DrawerContentScopeImpl : DrawerContentScope {
+    private val headers = mutableListOf<@Composable DrawerContentHeaderScope.() -> Unit>()
+
+    private val contents = mutableListOf<@Composable DrawerContentItemScope.() -> Unit>()
+
+    override fun header(header: @Composable DrawerContentHeaderScope.() -> Unit) {
+        headers.add(header)
+    }
+
+    override fun navigationItem(
+        label: @Composable DrawerContentItemScope.() -> Unit,
+        icon: (@Composable DrawerContentItemScope.() -> Unit)?,
+        onClick: () -> Unit,
+    ) {
+        contents.add {
+            ListItem(
+                modifier = Modifier.clickable(onClick = onClick),
+                leadingContent = {
+                    icon?.invoke(this)
+                },
+                headlineContent = {
+                    label()
+                },
+            )
+        }
+    }
+
+    @Composable
+    fun Compose() {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            items(headers.size) { index ->
+                with(DrawerContentHeaderScope) {
+                    headers[index]()
+                }
+            }
+            items(contents.size) { index ->
+                with(DrawerContentItemScope) {
+                    contents[index]()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+internal fun ChatNavigationDrawer(
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    drawerContent: DrawerContentScope.() -> Unit,
+    content: @Composable () -> Unit,
+) {
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            val scope =
+                remember {
+                    DrawerContentScopeImpl()
+                }
+            scope.drawerContent()
+            scope.Compose()
+        },
+        content = content,
+    )
+}
+
+@Composable
+internal fun DrawerContentHeaderScope.CreateThreadButton(onClick: () -> Unit) {
+    TextButton(
+        onClick = onClick,
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(id = R.string.view_chat_create_new_thread),
+        )
+        Text(
+            text = stringResource(id = R.string.view_chat_create_new_thread),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ChatNavigationDrawerPreview() {
+    GeminiChatTheme {
+        ChatNavigationDrawer(
+            drawerState = rememberDrawerState(DrawerValue.Open),
+            drawerContent = {
+                header {
+                    CreateThreadButton {
+                    }
+                }
+            },
+        ) {
+        }
+    }
+}

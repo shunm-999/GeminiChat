@@ -44,6 +44,7 @@ android {
 
 dependencies {
     implementation(project(":view:common-compose"))
+    implementation(project(":view:chat"))
     implementation(project(":domain:chat"))
 
     implementation(libs.androidx.activity.compose)
