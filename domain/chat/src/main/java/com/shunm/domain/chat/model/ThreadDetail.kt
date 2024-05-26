@@ -3,9 +3,7 @@ package com.shunm.domain.chat.model
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-data class ThreadId(val value: Long)
-
-data class Thread(
+data class ThreadDetail(
     val id: ThreadId,
     val title: String,
     val messages: List<Message>,

@@ -1,7 +1,9 @@
 package com.shunm.domain.common.model
 
 sealed interface Result<T, E>
+
 data class Ok<T, E>(val value: T) : Result<T, E>
+
 data class Err<T, E>(val error: E) : Result<T, E>
 
 fun <T, E> Result<T, E>.is_ok(): Boolean = this is Ok
@@ -47,14 +49,20 @@ fun <T, E, U> Result<T, E>.map(block: (T) -> U): Result<U, E> {
     }
 }
 
-fun <T, E, U> Result<T, E>.map_or(default: U, block: (T) -> U): U {
+fun <T, E, U> Result<T, E>.map_or(
+    default: U,
+    block: (T) -> U,
+): U {
     return when (this) {
         is Ok -> block(this.value)
         is Err -> default
     }
 }
 
-fun <T, E, U> Result<T, E>.map_or_else(default: (E) -> U, block: (T) -> U): U {
+fun <T, E, U> Result<T, E>.map_or_else(
+    default: (E) -> U,
+    block: (T) -> U,
+): U {
     return when (this) {
         is Ok -> block(this.value)
         is Err -> default(this.error)
@@ -118,10 +126,11 @@ fun <T, E> Result<T, E>.unwrap_err(): E {
 
 fun <T, E, U> Result<T, E>.and(res: Result<U, E>): Result<U, E> {
     return when (this) {
-        is Ok -> when (res) {
-            is Ok -> Ok(res.value)
-            is Err -> Err(res.error)
-        }
+        is Ok ->
+            when (res) {
+                is Ok -> Ok(res.value)
+                is Err -> Err(res.error)
+            }
         is Err -> Err(this.error)
     }
 }
@@ -136,10 +145,11 @@ fun <T, E, U> Result<T, E>.and_then(block: (T) -> Result<U, E>): Result<U, E> {
 fun <T, E, U> Result<T, E>.or(res: Result<T, U>): Result<T, U> {
     return when (this) {
         is Ok -> Ok(this.value)
-        is Err -> when (res) {
-            is Ok -> Ok(res.value)
-            is Err -> Err(res.error)
-        }
+        is Err ->
+            when (res) {
+                is Ok -> Ok(res.value)
+                is Err -> Err(res.error)
+            }
     }
 }
 

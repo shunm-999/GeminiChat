@@ -1,8 +1,8 @@
 package com.shunm.infra.chat.repository
 
 import com.shunm.domain.chat.input_data.ThreadCreation
-import com.shunm.domain.chat.model.Thread
 import com.shunm.domain.chat.model.ThreadId
+import com.shunm.domain.chat.model.ThreadSummary
 import com.shunm.domain.chat.repository.ThreadRepository
 import com.shunm.domain.common.coroutine.BasicDispatchers
 import com.shunm.domain.common.coroutine.Dispatcher
@@ -17,54 +17,55 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-internal class ThreadRepositoryImpl @Inject
-constructor(
-    @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    private val threadDao: ThreadDao,
-) : ThreadRepository {
-    override suspend fun getThreadList(): ExceptionResult<List<Thread>> {
-        return withContext(ioDispatcher) {
-            try {
-                with(ThreadDto) {
-                    Ok(threadDao.selectAll().map { it.toModel() })
+internal class ThreadRepositoryImpl
+    @Inject
+    constructor(
+        @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+        private val threadDao: ThreadDao,
+    ) : ThreadRepository {
+        override suspend fun getThreadList(): ExceptionResult<List<ThreadSummary>> {
+            return withContext(ioDispatcher) {
+                try {
+                    with(ThreadDto) {
+                        Ok(threadDao.selectAll().map { it.toModel() })
+                    }
+                } catch (e: Exception) {
+                    Err(e)
                 }
-            } catch (e: Exception) {
-                Err(e)
             }
         }
-    }
 
-    override suspend fun getThread(threadId: ThreadId): ExceptionResult<Thread> {
-        return withContext(ioDispatcher) {
-            try {
-                with(ThreadDto) {
-                    val thread = threadDao.selectById(threadId.value)
-                    Ok(thread.toModel())
+        override suspend fun getThread(threadId: ThreadId): ExceptionResult<ThreadSummary> {
+            return withContext(ioDispatcher) {
+                try {
+                    with(ThreadDto) {
+                        val thread = threadDao.selectById(threadId.value)
+                        Ok(thread.toModel())
+                    }
+                } catch (e: Exception) {
+                    Err(e)
                 }
-            } catch (e: Exception) {
-                Err(e)
             }
         }
-    }
 
-    override suspend fun getThreadFlow(threadId: ThreadId): Flow<ExceptionResult<Thread>> {
-        return threadDao.selectByIdFlow(threadId.value).map {
-            with(ThreadDto) {
-                Ok(it.toModel())
-            }
-        }
-    }
-
-    override suspend fun createThread(thread: ThreadCreation): ExceptionResult<ThreadId> {
-        return withContext(ioDispatcher) {
-            try {
+        override fun getThreadFlow(threadId: ThreadId): Flow<ExceptionResult<ThreadSummary>> {
+            return threadDao.selectByIdFlow(threadId.value).map {
                 with(ThreadDto) {
-                    val id = threadDao.insert(thread.toEntity())
-                    Ok(ThreadId(id))
+                    Ok(it.toModel())
                 }
-            } catch (e: Exception) {
-                Err(e)
+            }
+        }
+
+        override suspend fun createThread(thread: ThreadCreation): ExceptionResult<ThreadId> {
+            return withContext(ioDispatcher) {
+                try {
+                    with(ThreadDto) {
+                        val id = threadDao.insert(thread.toEntity())
+                        Ok(ThreadId(id))
+                    }
+                } catch (e: Exception) {
+                    Err(e)
+                }
             }
         }
     }
-}

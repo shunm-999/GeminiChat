@@ -16,7 +16,6 @@ android {
 
 dependencies {
     implementation(project(":domain:common"))
-    implementation(project(":infra:database"))
     implementation(libs.kotlinx.datetime)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)

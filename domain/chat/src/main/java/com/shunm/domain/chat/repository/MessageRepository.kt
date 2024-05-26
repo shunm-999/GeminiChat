@@ -6,10 +6,12 @@ import com.shunm.domain.common.model.ExceptionResult
 import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {
-    suspend fun getMessages(threadId: Int): ExceptionResult<List<Message>>
+    suspend fun getMessages(threadId: Long): ExceptionResult<List<Message>>
+
+    fun getMessagesFlow(threadId: Long): Flow<ExceptionResult<List<Message>>>
 
     suspend fun createMessage(
-        threadId: Int,
+        threadId: Long,
         message: Message,
-    ) : ExceptionResult<MessageId>
+    ): ExceptionResult<MessageId>
 }

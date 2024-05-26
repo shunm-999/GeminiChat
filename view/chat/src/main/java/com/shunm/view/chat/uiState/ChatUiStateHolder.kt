@@ -2,7 +2,7 @@ package com.shunm.view.chat.uiState
 
 import android.graphics.Bitmap
 import com.shunm.domain.chat.model.Message
-import com.shunm.domain.chat.model.Thread
+import com.shunm.domain.chat.model.ThreadSummary
 
 internal sealed interface ChatUiState {
     data object Loading : ChatUiState
@@ -13,13 +13,14 @@ internal sealed interface ChatUiState {
         data object Initial : Reedy
 
         data class Content(
-            val thread: Thread,
+            val threadSummary: ThreadSummary,
+            val messageList: List<Message>,
         ) : Reedy
     }
 }
 
 internal val ChatUiState.messageList: List<Message>
-    get() = (this as? ChatUiState.Reedy.Content)?.thread?.messages.orEmpty()
+    get() = (this as? ChatUiState.Reedy.Content)?.messageList.orEmpty()
 
 internal data class ChatInputUiState(
     val text: String,

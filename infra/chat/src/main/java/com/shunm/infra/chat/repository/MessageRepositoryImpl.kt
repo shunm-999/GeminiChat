@@ -12,32 +12,52 @@ import com.shunm.infra.database.chat.dao.MessageDao
 import com.shunm.infra.database.chat.dto.MessageDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MessageRepositoryImpl
-@Inject
-constructor(
-    @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    private val messageDao: MessageDao
-) : MessageRepository {
-    override suspend fun getMessages(threadId: Int): ExceptionResult<List<Message>> {
-        return withContext(ioDispatcher) {
-            try {
-                with(MessageDto) {
-                    val messages = messageDao.selectByThreadId(threadId)
-                    Ok(messages.map { it.toModel() })
+    @Inject
+    constructor(
+        @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+        private val messageDao: MessageDao,
+    ) : MessageRepository {
+        override suspend fun getMessages(threadId: Long): ExceptionResult<List<Message>> {
+            return withContext(ioDispatcher) {
+                try {
+                    with(MessageDto) {
+                        val messages = messageDao.selectByThreadId(threadId)
+                        Ok(messages.map { it.toModel() })
+                    }
+                } catch (e: Exception) {
+                    Err(e)
                 }
-            } catch (e: Exception) {
-                Err(e)
+            }
+        }
+
+        override fun getMessagesFlow(threadId: Long): Flow<ExceptionResult<List<Message>>> {
+            return messageDao.selectByThreadIdFlow(threadId).map { entities ->
+                with(MessageDto) {
+                    val messages = entities.map { it.toModel() }
+                    Ok(messages)
+                }
+            }
+        }
+
+        override suspend fun createMessage(
+            threadId: Long,
+            message: Message,
+        ): ExceptionResult<MessageId> {
+            return withContext(ioDispatcher) {
+                try {
+                    with(MessageDto) {
+                        val messageEntity = message.toEntity(threadId)
+                        messageDao.insert(messageEntity)
+                        Ok(MessageId(messageEntity.id))
+                    }
+                } catch (e: Exception) {
+                    Err(e)
+                }
             }
         }
     }
-
-    override suspend fun createMessage(
-        threadId: Int,
-        message: Message
-    ): ExceptionResult<MessageId> {
-        TODO("Not yet implemented")
-    }
-}

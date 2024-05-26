@@ -28,9 +28,9 @@ internal object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providesThreadDao(appDatabase: AppDatabase) : ThreadDao = appDatabase.threadDao()
+    fun providesThreadDao(appDatabase: AppDatabase): ThreadDao = appDatabase.threadDao()
 
     @Provides
     @Singleton
-    fun providesMessageDao(appDatabase: AppDatabase) : MessageDao = appDatabase.messageDao()
+    fun providesMessageDao(appDatabase: AppDatabase): MessageDao = appDatabase.messageDao()
 }

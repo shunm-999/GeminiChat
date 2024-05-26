@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.shunm.infra.database.chat.entity.MessageEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MessageDao {
@@ -16,7 +17,10 @@ interface MessageDao {
     suspend fun selectById(id: Int): MessageEntity
 
     @Query("SELECT * FROM messages WHERE thread_id = :threadId")
-    suspend fun selectByThreadId(threadId: Int): List<MessageEntity>
+    suspend fun selectByThreadId(threadId: Long): List<MessageEntity>
+
+    @Query("SELECT * FROM messages WHERE thread_id = :threadId")
+    fun selectByThreadIdFlow(threadId: Long): Flow<List<MessageEntity>>
 
     @Insert
     suspend fun insert(message: MessageEntity)

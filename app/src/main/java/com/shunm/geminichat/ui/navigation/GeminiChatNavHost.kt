@@ -6,9 +6,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.shunm.common_compose.navigation.NavigateTemplate
 import com.shunm.view.chat.navigation.ChatRoute
 import com.shunm.view.chat.navigation.chatNavGraph
+import kotlin.reflect.KClass
 
 @Composable
 internal fun GeminiChatNavHost(modifier: Modifier = Modifier) {
@@ -16,7 +16,7 @@ internal fun GeminiChatNavHost(modifier: Modifier = Modifier) {
 
     GeminiChatNavHost(
         navController = navController,
-        startDestination = ChatRoute,
+        startDestination = ChatRoute::class,
         modifier = modifier,
     ) {
         chatNavGraph(
@@ -29,12 +29,12 @@ internal fun GeminiChatNavHost(modifier: Modifier = Modifier) {
 internal fun GeminiChatNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: NavigateTemplate,
+    startDestination: KClass<*>,
     builder: NavGraphBuilder.() -> Unit,
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination.toRoute(),
+        startDestination = startDestination,
         modifier = modifier,
         builder = builder,
     )
