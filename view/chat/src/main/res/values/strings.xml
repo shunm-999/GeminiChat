@@ -2,4 +2,5 @@
 <resources>
     <string name="view_chat_gemini_model_name">GeminiChat</string>
     <string name="view_chat_create_new_thread">新しくチャットを始める</string>
+    <string name="view_chat_input_field_placeholder">メッセージを入力</string>
 </resources>

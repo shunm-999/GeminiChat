@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -58,7 +60,11 @@ internal fun MessageTile(
                 sender = message.sender,
             )
         },
-        message = {},
+        message = {
+            MessageContent(
+                text = message.text,
+            )
+        },
     )
 }
 
@@ -83,7 +89,6 @@ private fun MessageTileFrame(
                 modifier =
                     Modifier
                         .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
@@ -96,9 +101,10 @@ private fun MessageTileFrame(
                 ) {
                     icon()
                 }
+                Spacer(modifier = Modifier.width(8.dp))
                 sender()
             }
-            Box(modifier = Modifier.padding(start = iconWidth)) {
+            Box(modifier = Modifier.padding(start = iconWidth + 8.dp)) {
                 message()
             }
         }
@@ -160,6 +166,14 @@ private fun SenderName(
                 is Message.Sender.Model -> stringResource(id = R.string.view_chat_gemini_model_name)
             },
         style = style,
+    )
+}
+
+@Composable
+private fun MessageContent(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodySmall,
     )
 }
 

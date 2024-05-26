@@ -1,10 +1,10 @@
 package com.shunm.view.chat.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -60,12 +60,12 @@ internal fun ChatScreen(
                 CreateThreadButton {
                     coroutineScope.launch {
                         drawerState.close()
+                        navigate(
+                            ChatRoute(
+                                threadId = -1,
+                            ),
+                        )
                     }
-                    navigate(
-                        ChatRoute(
-                            threadId = -1,
-                        ),
-                    )
                 }
             }
             uiStateHolder.uiState.messageList.forEach { thread ->
@@ -120,6 +120,21 @@ internal fun ChatScreen(
                     },
                 )
             },
+            bottomBar = {
+                BottomAppBar {
+                    ChatInputField(
+                        text = uiStateHolder.inputUiState.text,
+                        onTextChange = { text ->
+                            uiStateHolder.update {
+                                copy(text = text)
+                            }
+                        },
+                        onSubmit = {
+                            uiStateHolder.submit()
+                        },
+                    )
+                }
+            },
         ) {
             ChatScreenContent(
                 uiStateHolder = uiStateHolder,
@@ -133,13 +148,10 @@ private fun ChatScreenContent(
     modifier: Modifier = Modifier,
     uiStateHolder: ChatUiStateHolder,
 ) {
-    Box(
+    MessageList(
         modifier = modifier,
-    ) {
-        MessageList(
-            messages = uiStateHolder.uiState.messageList,
-        )
-    }
+        messages = uiStateHolder.uiState.messageList,
+    )
 }
 
 @PreviewLightDark

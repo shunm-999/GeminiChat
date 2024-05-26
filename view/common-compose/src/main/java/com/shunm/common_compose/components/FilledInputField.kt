@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -27,11 +28,17 @@ object FilledInputFieldScope
 fun FilledInputField(
     value: String,
     onValueChange: (String) -> Unit,
-    placeholder: @Composable (FilledInputFieldScope.() -> Unit)? = null,
-    trailingIcon: @Composable (FilledInputFieldScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    placeholder:
+        @Composable()
+        (FilledInputFieldScope.() -> Unit)? = null,
+    trailingIcon:
+        @Composable()
+        (FilledInputFieldScope.() -> Unit)? = null,
 ) {
     with(FilledInputFieldScope) {
         TextField(
+            modifier = modifier,
             value = value,
             onValueChange = onValueChange,
             placeholder =

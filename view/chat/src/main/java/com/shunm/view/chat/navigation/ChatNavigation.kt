@@ -1,6 +1,7 @@
 package com.shunm.view.chat.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.shunm.common_compose.navigation.NavigateRoute
@@ -18,13 +19,21 @@ data class ChatRoute(
     }
 }
 
-fun NavController.navigateToChat(route: ChatRoute) = navigate(route)
+fun NavController.navigateToChat(route: ChatRoute) =
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+    }
 
 fun NavGraphBuilder.chatNavGraph(navController: NavController) {
     composable<ChatRoute> {
         ChatScreen(
             navigate = { route ->
-                navController.navigate(route)
+                when (route) {
+                    is ChatRoute -> navController.navigateToChat(route)
+                }
             },
         )
     }
