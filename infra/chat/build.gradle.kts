@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.geminiChat.android.library)
     alias(libs.plugins.geminiChat.android.hilt)
+    alias(libs.plugins.geminiChat.android.room)
     id("kotlinx-serialization")
 }
 
 android {
-    namespace = "com.shum.domain.chat"
+    namespace = "com.shunm.infra.chat"
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
@@ -15,9 +16,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain:common"))
-    implementation(project(":infra:database"))
-    implementation(libs.kotlinx.datetime)
+    api(project(":domain:common"))
+    api(project(":domain:chat"))
+    api(project(":infra:database"))
+
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
 }

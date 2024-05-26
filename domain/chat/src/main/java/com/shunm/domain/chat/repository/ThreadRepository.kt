@@ -9,5 +9,5 @@ interface ThreadRepository {
 
     suspend fun getThread(threadId: ThreadId): Thread
 
-    suspend fun createThread(thread: ThreadCreation)
+    suspend fun createThread(thread: ThreadCreation): Thread
 }

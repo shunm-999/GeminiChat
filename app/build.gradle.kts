@@ -46,6 +46,8 @@ dependencies {
     implementation(project(":view:common-compose"))
     implementation(project(":view:chat"))
     implementation(project(":domain:chat"))
+    implementation(project(":domain:common"))
+    implementation(project(":infra:database"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3.adaptive)
