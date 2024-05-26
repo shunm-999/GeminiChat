@@ -1,6 +1,7 @@
 package com.shunm.infra.chat.repository
 
 import com.shunm.domain.chat.input_data.ThreadCreation
+import com.shunm.domain.chat.model.ThreadDetail
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.model.ThreadSummary
 import com.shunm.domain.chat.repository.ThreadRepository
@@ -50,6 +51,27 @@ internal class ThreadRepositoryImpl
 
         override fun getThreadFlow(threadId: ThreadId): Flow<ExceptionResult<ThreadSummary>> {
             return threadDao.selectByIdFlow(threadId.value).map {
+                with(ThreadDto) {
+                    Ok(it.toModel())
+                }
+            }
+        }
+
+        override suspend fun getThreadDetail(threadId: ThreadId): ExceptionResult<ThreadDetail> {
+            return withContext(ioDispatcher) {
+                try {
+                    with(ThreadDto) {
+                        val threadWithMessages = threadDao.selectByIdWithMessages(threadId.value)
+                        Ok(threadWithMessages.toModel())
+                    }
+                } catch (e: Exception) {
+                    Err(e)
+                }
+            }
+        }
+
+        override fun getThreadDetailFlow(threadId: ThreadId): Flow<ExceptionResult<ThreadDetail>> {
+            return threadDao.selectByIdWithMessagesFlow(threadId.value).map {
                 with(ThreadDto) {
                     Ok(it.toModel())
                 }

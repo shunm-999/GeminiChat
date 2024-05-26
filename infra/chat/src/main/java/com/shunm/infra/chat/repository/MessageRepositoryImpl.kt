@@ -1,5 +1,6 @@
 package com.shunm.infra.chat.repository
 
+import com.shunm.domain.chat.input_data.MessageCreation
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.MessageId
 import com.shunm.domain.chat.repository.MessageRepository
@@ -44,14 +45,11 @@ internal class MessageRepositoryImpl
             }
         }
 
-        override suspend fun createMessage(
-            threadId: Long,
-            message: Message,
-        ): ExceptionResult<MessageId> {
+        override suspend fun createMessage(messageCreation: MessageCreation): ExceptionResult<MessageId> {
             return withContext(ioDispatcher) {
                 try {
                     with(MessageDto) {
-                        val messageEntity = message.toEntity(threadId)
+                        val messageEntity = messageCreation.toEntity()
                         messageDao.insert(messageEntity)
                         Ok(MessageId(messageEntity.id))
                     }

@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain:common"))
     implementation(project(":domain:chat"))
 }

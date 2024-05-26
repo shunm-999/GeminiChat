@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":view:chat"))
     implementation(project(":domain:chat"))
     implementation(project(":domain:common"))
+    implementation(project(":infra:chat"))
     implementation(project(":infra:database"))
 
     implementation(libs.androidx.activity.compose)

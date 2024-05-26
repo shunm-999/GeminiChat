@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.shunm.common_compose.layouts.GeminiScaffold
 import com.shunm.common_compose.navigation.NavigateRoute
 import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.R
 import com.shunm.view.chat.components.MessageList
 import com.shunm.view.chat.layouts.ChatNavigationDrawer
@@ -31,11 +32,12 @@ import com.shunm.view.chat.navigation.ChatRoute
 import com.shunm.view.chat.uiState.ChatUiStateHolder
 import com.shunm.view.chat.uiState.messageList
 import com.shunm.view.chat.viewmodel.ChatViewModel
+import com.shunm.view.chat.viewmodel.ChatViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun ChatScreen(
-    viewModel: ChatViewModel = hiltViewModel(),
+    viewModel: ChatViewModel,
     navigate: (NavigateRoute) -> Unit,
 ) {
     ChatScreen(
@@ -160,6 +162,11 @@ internal fun ChatScreenPreview() {
     GeminiChatTheme {
         Surface {
             ChatScreen(
+                hiltViewModel(
+                    creationCallback = { factory: ChatViewModelFactory ->
+                        factory.create(ThreadId(1))
+                    },
+                ),
                 navigate = {
                 },
             )

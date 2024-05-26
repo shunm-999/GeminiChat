@@ -1,8 +1,10 @@
 package com.shunm.infra.database.chat.dto
 
 import com.shunm.domain.chat.input_data.ThreadCreation
+import com.shunm.domain.chat.model.ThreadDetail
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.model.ThreadSummary
+import com.shunm.infra.database.chat.dto.MessageDto.toModel
 import com.shunm.infra.database.chat.entity.ThreadEntity
 import com.shunm.infra.database.chat.entity.ThreadWithMessages
 import kotlinx.datetime.Instant
@@ -24,11 +26,13 @@ object ThreadDto {
         )
     }
 
-    fun ThreadWithMessages.toModel(): ThreadSummary {
+    fun ThreadWithMessages.toModel(): ThreadDetail {
         val thread = this.thread
-        return ThreadSummary(
+        val messages = this.messages.map { it.toModel() }
+        return ThreadDetail(
             id = ThreadId(thread.id),
             title = thread.title,
+            messages = messages,
             createAt = Instant.fromEpochMilliseconds(thread.createAt),
         )
     }
