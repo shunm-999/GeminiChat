@@ -1,5 +1,6 @@
 package com.shunm.view.chat.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.Edit
@@ -14,19 +15,41 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.shunm.common_compose.layouts.GeminiScaffold
+import com.shunm.common_compose.navigation.NavigateRoute
 import com.shunm.common_compose.theme.GeminiChatTheme
 import com.shunm.view.chat.R
+import com.shunm.view.chat.components.MessageList
 import com.shunm.view.chat.layouts.ChatNavigationDrawer
 import com.shunm.view.chat.layouts.CreateThreadButton
 import com.shunm.view.chat.layouts.NavigationItem
+import com.shunm.view.chat.navigation.ChatRoute
+import com.shunm.view.chat.uiState.ChatUiStateHolder
+import com.shunm.view.chat.uiState.messageList
+import com.shunm.view.chat.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
+
+@Composable
+internal fun ChatScreen(
+    viewModel: ChatViewModel = hiltViewModel(),
+    navigate: (NavigateRoute) -> Unit,
+) {
+    ChatScreen(
+        uiStateHolder = viewModel,
+        navigate = navigate,
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ChatScreen() {
+internal fun ChatScreen(
+    uiStateHolder: ChatUiStateHolder,
+    navigate: (NavigateRoute) -> Unit,
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -35,13 +58,26 @@ internal fun ChatScreen() {
         drawerContent = {
             header {
                 CreateThreadButton {
+                    coroutineScope.launch {
+                        drawerState.close()
+                    }
+                    navigate(
+                        ChatRoute(
+                            threadId = -1,
+                        ),
+                    )
                 }
             }
-            listOf("Thread1", "Thread2", "Thread3").forEach { thread ->
+            uiStateHolder.uiState.messageList.forEach { thread ->
                 content {
                     NavigationItem(
-                        text = thread,
+                        text = thread.text,
                         onClick = {
+                            navigate(
+                                ChatRoute(
+                                    threadId = thread.id.value,
+                                ),
+                            )
                         },
                     )
                 }
@@ -85,13 +121,25 @@ internal fun ChatScreen() {
                 )
             },
         ) {
-            ChatScreenContent()
+            ChatScreenContent(
+                uiStateHolder = uiStateHolder,
+            )
         }
     }
 }
 
 @Composable
-private fun ChatScreenContent() {
+private fun ChatScreenContent(
+    modifier: Modifier = Modifier,
+    uiStateHolder: ChatUiStateHolder,
+) {
+    Box(
+        modifier = modifier,
+    ) {
+        MessageList(
+            messages = uiStateHolder.uiState.messageList,
+        )
+    }
 }
 
 @PreviewLightDark
@@ -99,7 +147,10 @@ private fun ChatScreenContent() {
 internal fun ChatScreenPreview() {
     GeminiChatTheme {
         Surface {
-            ChatScreen()
+            ChatScreen(
+                navigate = {
+                },
+            )
         }
     }
 }

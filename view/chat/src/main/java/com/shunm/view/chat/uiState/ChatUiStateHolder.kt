@@ -1,6 +1,7 @@
 package com.shunm.view.chat.uiState
 
 import android.graphics.Bitmap
+import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.Thread
 
 internal sealed interface ChatUiState {
@@ -16,6 +17,9 @@ internal sealed interface ChatUiState {
         ) : Reedy
     }
 }
+
+internal val ChatUiState.messageList: List<Message>
+    get() = (this as? ChatUiState.Reedy.Content)?.thread?.messages.orEmpty()
 
 internal data class ChatInputUiState(
     val text: String,
