@@ -19,7 +19,7 @@ import androidx.room.TypeConverter
         ),
 )
 data class MessageEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "thread_id")
     val threadId: Long,
     val sender: SenderType,

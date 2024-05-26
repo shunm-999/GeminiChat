@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "threads")
 data class ThreadEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     val title: String,
     @ColumnInfo(name = "create_at")
     val createAt: Long,

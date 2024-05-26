@@ -3,6 +3,8 @@ package com.shunm.infra.database.chat.di
 import android.content.Context
 import androidx.room.Room
 import com.shunm.infra.database.AppDatabase
+import com.shunm.infra.database.chat.dao.MessageDao
+import com.shunm.infra.database.chat.dao.ThreadDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +25,12 @@ internal object DatabaseModule {
             AppDatabase::class.java,
             "gemini-chat-database",
         ).build()
+
+    @Provides
+    @Singleton
+    fun providesThreadDao(appDatabase: AppDatabase) : ThreadDao = appDatabase.threadDao()
+
+    @Provides
+    @Singleton
+    fun providesMessageDao(appDatabase: AppDatabase) : MessageDao = appDatabase.messageDao()
 }

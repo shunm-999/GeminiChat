@@ -1,7 +1,43 @@
 package com.shunm.infra.chat.repository
 
+import com.shunm.domain.chat.model.Message
+import com.shunm.domain.chat.model.MessageId
+import com.shunm.domain.chat.repository.MessageRepository
+import com.shunm.domain.common.coroutine.BasicDispatchers
+import com.shunm.domain.common.coroutine.Dispatcher
+import com.shunm.domain.common.model.Err
+import com.shunm.domain.common.model.ExceptionResult
+import com.shunm.domain.common.model.Ok
+import com.shunm.infra.database.chat.dao.MessageDao
+import com.shunm.infra.database.chat.dto.MessageDto
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MessageRepositoryImpl
-    @Inject
-    constructor()
+@Inject
+constructor(
+    @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    private val messageDao: MessageDao
+) : MessageRepository {
+    override suspend fun getMessages(threadId: Int): ExceptionResult<List<Message>> {
+        return withContext(ioDispatcher) {
+            try {
+                with(MessageDto) {
+                    val messages = messageDao.selectByThreadId(threadId)
+                    Ok(messages.map { it.toModel() })
+                }
+            } catch (e: Exception) {
+                Err(e)
+            }
+        }
+    }
+
+    override suspend fun createMessage(
+        threadId: Int,
+        message: Message
+    ): ExceptionResult<MessageId> {
+        TODO("Not yet implemented")
+    }
+}

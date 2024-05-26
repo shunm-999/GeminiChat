@@ -15,6 +15,9 @@ interface MessageDao {
     @Query("SELECT * FROM messages WHERE id = :id")
     suspend fun selectById(id: Int): MessageEntity
 
+    @Query("SELECT * FROM messages WHERE thread_id = :threadId")
+    suspend fun selectByThreadId(threadId: Int): List<MessageEntity>
+
     @Insert
     suspend fun insert(message: MessageEntity)
 
