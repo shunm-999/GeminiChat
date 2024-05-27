@@ -1,6 +1,12 @@
 # AIChat Android Application
 
-AIChat is an Android application that leverages the Gemini Pro API to provide intelligent conversational capabilities similar to ChatGPT. Follow the steps below to set up and run the application.
+AIChat is an Android application that leverages the Gemini Pro API to provide intelligent conversational capabilities similar to ChatGPT. 
+
+## Demo
+<img src="https://github.com/shunm-999/GeminiChat/assets/37167834/8b14c5ca-d524-4199-84a1-5d41a23fa4b0" width="300"/>
+
+# How to Use
+Follow the steps below to set up and run the application.
 
 ## Prerequisites
 
