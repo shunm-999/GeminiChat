@@ -5,11 +5,7 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        buildConfig = true
-    }
     defaultConfig {
-        buildConfigField("String", "GEMINI_API_KEY", "\"${System.getenv("GEMINI_API_KEY")}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     namespace = "com.shunm.infra.database"

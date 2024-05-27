@@ -1,7 +1,9 @@
 package com.shunm.infra.chat.di
 
+import com.shunm.domain.chat.repository.GeminiRepository
 import com.shunm.domain.chat.repository.MessageRepository
 import com.shunm.domain.chat.repository.ThreadRepository
+import com.shunm.infra.chat.repository.GeminiRepositoryImpl
 import com.shunm.infra.chat.repository.MessageRepositoryImpl
 import com.shunm.infra.chat.repository.ThreadRepositoryImpl
 import dagger.Binds
@@ -17,4 +19,7 @@ internal interface RepositoryModule {
 
     @Binds
     fun bindMessageRepository(messageRepositoryImpl: MessageRepositoryImpl): MessageRepository
+
+    @Binds
+    fun bindGeminiRepository(geminiRepositoryImpl: GeminiRepositoryImpl): GeminiRepository
 }
