@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.shunm.view.chat.navigation.ChatRoute
+import com.shunm.view.chat.navigation.ChatNavGraph
 import com.shunm.view.chat.navigation.chatNavGraph
 import kotlin.reflect.KClass
 
@@ -16,7 +16,7 @@ internal fun GeminiChatNavHost(modifier: Modifier = Modifier) {
 
     GeminiChatNavHost(
         navController = navController,
-        startDestination = ChatRoute::class,
+        startDestination = ChatNavGraph::class,
         modifier = modifier,
     ) {
         chatNavGraph(

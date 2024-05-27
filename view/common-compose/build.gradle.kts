@@ -22,6 +22,9 @@ dependencies {
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui.util)
+    api(libs.androidx.lifecycle.viewModelCompose)
+    api(libs.androidx.navigation.compose)
+    api(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.coil.kt.compose)
 

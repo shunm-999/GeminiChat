@@ -36,6 +36,14 @@ internal class ThreadRepositoryImpl
             }
         }
 
+        override fun getThreadListFlow(): Flow<ExceptionResult<List<ThreadSummary>>> {
+            return threadDao.selectAllFlow().map {
+                with(ThreadDto) {
+                    Ok(it.map { it.toModel() })
+                }
+            }
+        }
+
         override suspend fun getThread(threadId: ThreadId): ExceptionResult<ThreadSummary> {
             return withContext(ioDispatcher) {
                 try {

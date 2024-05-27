@@ -11,7 +11,6 @@ import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.usecase.CreateMessageUseCase
 import com.shunm.domain.chat.usecase.CreateThreadUseCase
-import com.shunm.domain.chat.usecase.GetMessageListUseCase
 import com.shunm.domain.chat.usecase.GetThreadDetailUseCase
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
@@ -32,7 +31,6 @@ internal class ChatViewModel
     constructor(
         @Assisted private val threadId: ThreadId,
         private val getThreadDetailUseCase: GetThreadDetailUseCase,
-        private val getMessageListUseCase: GetMessageListUseCase,
         private val createThreadUseCase: CreateThreadUseCase,
         private val createMessageUseCase: CreateMessageUseCase,
     ) : ViewModel(), ChatUiStateHolder {

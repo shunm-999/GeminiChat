@@ -14,6 +14,9 @@ interface ThreadDao {
     @Query("SELECT * FROM threads")
     suspend fun selectAll(): List<ThreadEntity>
 
+    @Query("SELECT * FROM threads")
+    fun selectAllFlow(): Flow<List<ThreadEntity>>
+
     @Query("SELECT * FROM threads WHERE id = :id")
     suspend fun selectById(id: Long): ThreadEntity
 

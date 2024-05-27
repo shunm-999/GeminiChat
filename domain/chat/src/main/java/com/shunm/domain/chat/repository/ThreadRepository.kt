@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 interface ThreadRepository {
     suspend fun getThreadList(): ExceptionResult<List<ThreadSummary>>
 
+    fun getThreadListFlow(): Flow<ExceptionResult<List<ThreadSummary>>>
+
     suspend fun getThread(threadId: ThreadId): ExceptionResult<ThreadSummary>
 
     fun getThreadFlow(threadId: ThreadId): Flow<ExceptionResult<ThreadSummary>>

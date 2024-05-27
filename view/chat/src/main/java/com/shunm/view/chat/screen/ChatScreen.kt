@@ -30,6 +30,7 @@ import com.shunm.view.chat.layouts.CreateThreadButton
 import com.shunm.view.chat.layouts.NavigationItem
 import com.shunm.view.chat.navigation.ChatRoute
 import com.shunm.view.chat.uiState.ChatUiStateHolder
+import com.shunm.view.chat.uiState.DrawerUiStateHolder
 import com.shunm.view.chat.uiState.messageList
 import com.shunm.view.chat.viewmodel.ChatViewModel
 import com.shunm.view.chat.viewmodel.ChatViewModelFactory
@@ -38,10 +39,12 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel,
+    drawerUiStateHolder: DrawerUiStateHolder,
     navigate: (NavigateRoute) -> Unit,
 ) {
     ChatScreen(
         uiStateHolder = viewModel,
+        drawerUiStateHolder = drawerUiStateHolder,
         navigate = navigate,
     )
 }
@@ -50,6 +53,7 @@ internal fun ChatScreen(
 @Composable
 internal fun ChatScreen(
     uiStateHolder: ChatUiStateHolder,
+    drawerUiStateHolder: DrawerUiStateHolder,
     navigate: (NavigateRoute) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -70,10 +74,10 @@ internal fun ChatScreen(
                     }
                 }
             }
-            uiStateHolder.uiState.messageList.forEach { thread ->
+            drawerUiStateHolder.uiState.threadList.forEach { thread ->
                 content {
                     NavigationItem(
-                        text = thread.text,
+                        text = thread.title,
                         onClick = {
                             navigate(
                                 ChatRoute(
@@ -167,6 +171,7 @@ internal fun ChatScreenPreview() {
                         factory.create(ThreadId(1))
                     },
                 ),
+                drawerUiStateHolder = DrawerUiStateHolder(),
                 navigate = {
                 },
             )
