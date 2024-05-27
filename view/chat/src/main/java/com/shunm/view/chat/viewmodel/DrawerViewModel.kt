@@ -32,11 +32,9 @@ internal class DrawerViewModel
                                 DrawerUiState(
                                     threadList = it.value,
                                 )
-                            println("⭐️ DrawerViewModel: ${uiState.threadList}")
                         }
 
                         is Err -> {
-                            println("⭐️ DrawerViewModel: ${it.error}")
                         }
                     }
                 }

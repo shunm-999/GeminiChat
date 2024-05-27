@@ -122,10 +122,11 @@ internal fun DrawerContentHeaderScope.CreateThreadButton(onClick: () -> Unit) {
 internal fun DrawerContentItemScope.NavigationItem(
     text: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Text(
         modifier =
-            Modifier
+            modifier
                 .padding(vertical = 8.dp)
                 .clickable(onClick = onClick),
         text = text,

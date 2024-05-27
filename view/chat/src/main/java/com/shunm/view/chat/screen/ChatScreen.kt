@@ -1,5 +1,7 @@
 package com.shunm.view.chat.screen
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.Edit
@@ -77,6 +79,7 @@ internal fun ChatScreen(
             drawerUiStateHolder.uiState.threadList.forEach { thread ->
                 content {
                     NavigationItem(
+                        modifier = Modifier.fillMaxWidth(),
                         text = thread.title,
                         onClick = {
                             navigate(
@@ -127,7 +130,9 @@ internal fun ChatScreen(
                 )
             },
             bottomBar = {
-                BottomAppBar {
+                BottomAppBar(
+                    modifier = Modifier.imePadding(),
+                ) {
                     ChatInputField(
                         text = uiStateHolder.inputUiState.text,
                         onTextChange = { text ->
@@ -143,6 +148,7 @@ internal fun ChatScreen(
             },
         ) {
             ChatScreenContent(
+                modifier = Modifier.imePadding(),
                 uiStateHolder = uiStateHolder,
             )
         }

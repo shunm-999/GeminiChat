@@ -173,7 +173,7 @@ private fun SenderName(
 private fun MessageContent(text: String) {
     Text(
         text = text,
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyLarge,
     )
 }
 

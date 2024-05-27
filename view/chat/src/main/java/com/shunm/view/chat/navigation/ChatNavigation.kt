@@ -2,7 +2,6 @@ package com.shunm.view.chat.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -26,10 +25,9 @@ data class ChatRoute internal constructor(
 
 fun NavController.navigateToChat(route: ChatRoute) =
     navigate(route) {
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
+        popUpTo<ChatRoute> {
+            inclusive = true
         }
-        launchSingleTop = true
     }
 
 fun NavGraphBuilder.chatNavGraph(navController: NavController) {
