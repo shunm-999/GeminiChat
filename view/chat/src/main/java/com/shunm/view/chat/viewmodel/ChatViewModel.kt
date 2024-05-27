@@ -12,6 +12,7 @@ import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.usecase.CreateMessageUseCase
 import com.shunm.domain.chat.usecase.CreateThreadUseCase
 import com.shunm.domain.chat.usecase.GetThreadDetailUseCase
+import com.shunm.domain.common.ktx.format
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
 import com.shunm.view.chat.uiState.ChatInputUiState
@@ -74,15 +75,16 @@ internal class ChatViewModel
                 val threadId =
                     when (currentUiState) {
                         ChatUiState.Reedy.Initial -> {
-                            when (
-                                val result =
-                                    createThreadUseCase(
-                                        ThreadCreation(
-                                            title = "Chat",
-                                            createAt = Clock.System.now(),
-                                        ),
-                                    )
-                            ) {
+                            val datetimeString = Clock.System.now().format("yyyy-MM-dd")
+
+                            val result =
+                                createThreadUseCase(
+                                    ThreadCreation(
+                                        title = "Chat $datetimeString",
+                                        createAt = Clock.System.now(),
+                                    ),
+                                )
+                            when (result) {
                                 is Ok -> {
                                     loadThread(result.value)
                                     result.value
