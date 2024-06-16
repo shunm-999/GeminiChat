@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.geminiChat.android.feature)
+    alias(libs.plugins.geminiChat.android.screenshot.test)
 }
 
 android {

@@ -58,6 +58,10 @@ gradlePlugin {
             id = "geminiChat.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("androidScreenshotTest") {
+            id = "geminiChat.android.screenshot.test"
+            implementationClass = "AndroidScreenshotTestConventionPlugin"
+        }
         register("androidTest") {
             id = "geminiChat.android.test"
             implementationClass = "AndroidTestConventionPlugin"

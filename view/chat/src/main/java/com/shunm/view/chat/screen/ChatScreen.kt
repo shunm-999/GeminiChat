@@ -26,6 +26,7 @@ import com.shunm.common_compose.navigation.NavigateRoute
 import com.shunm.common_compose.theme.GeminiChatTheme
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.R
+import com.shunm.view.chat.components.ChatInputField
 import com.shunm.view.chat.components.MessageList
 import com.shunm.view.chat.layouts.ChatNavigationDrawer
 import com.shunm.view.chat.layouts.CreateThreadButton
