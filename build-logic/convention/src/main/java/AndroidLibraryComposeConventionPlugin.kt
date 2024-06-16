@@ -22,15 +22,18 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.kotlin
 import com.shunm.build_logic.libs
+import com.shunm.build_logic.pluginId
 
 class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply("com.android.library")
+            with(pluginManager) {
+                apply("com.android.library")
+                apply(libs.pluginId("compose-compiler"))
+            }
 
             val extension = extensions.getByType<LibraryExtension>()
             configureAndroidCompose(extension)
         }
     }
-
 }
