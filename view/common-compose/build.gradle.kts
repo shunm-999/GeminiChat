@@ -33,7 +33,6 @@ dependencies {
 
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.robolectric)
-    testImplementation(libs.roborazzi)
 
     androidTestImplementation(libs.androidx.compose.ui.test)
 }

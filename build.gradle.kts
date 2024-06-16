@@ -12,9 +12,9 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.ktlint.gradle) apply false
-    alias(libs.plugins.roborazzi) apply false
     alias(libs.plugins.secrets) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.module.graph) apply true
     alias(libs.plugins.jetbrains.kotlin.android) apply false // Plugin applied to allow module graph generation
+    alias(libs.plugins.compose.screenshot.test) apply false
 }

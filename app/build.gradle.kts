@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.geminiChat.android.application)
     alias(libs.plugins.geminiChat.android.application.compose)
     alias(libs.plugins.geminiChat.android.hilt)
-    alias(libs.plugins.roborazzi)
 }
 
 android {

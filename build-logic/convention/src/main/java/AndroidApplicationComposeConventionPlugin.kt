@@ -1,14 +1,17 @@
-
-import com.shunm.build_logic.configureAndroidCompose
-
 import com.android.build.api.dsl.ApplicationExtension
+import com.shunm.build_logic.configureAndroidCompose
+import com.shunm.build_logic.libs
+import com.shunm.build_logic.pluginId
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
+
 class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply("com.android.application")
+            with(pluginManager) {
+                apply("com.android.application")
+            }
 
             val extension = extensions.getByType<ApplicationExtension>()
             configureAndroidCompose(extension)
