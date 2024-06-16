@@ -32,8 +32,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.library")
-                apply(libs.pluginId("jetbrains-kotlin-android"))
-                apply(libs.pluginId("compose-compiler"))
+                apply("org.jetbrains.kotlin.android")
                 apply(libs.pluginId("ktlint-gradle"))
                 apply("kotlinx-serialization")
                 apply("geminiChat.android.lint")

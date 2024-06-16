@@ -28,8 +28,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply(libs.pluginId("jetbrains-kotlin-android"))
-                apply(libs.pluginId("compose-compiler"))
+                apply("org.jetbrains.kotlin.android")
                 apply(libs.pluginId("ktlint-gradle"))
                 apply("geminiChat.android.lint")
                 apply("com.dropbox.dependency-guard")

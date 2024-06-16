@@ -21,13 +21,13 @@ kotlin {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
+    implementation(libs.kotlin.compose.compiler.gradlePlugin)
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
     compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
     implementation(libs.truth)
-    implementation(libs.kotlin.compose.compiler.gradlePlugin)
 }
 
 tasks {
