@@ -20,6 +20,7 @@ android {
 
     buildTypes {
         debug {
+            isMinifyEnabled = false
             applicationIdSuffix = ".debug"
         }
         release {
@@ -71,7 +72,7 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    kspTest(libs.hilt.compiler)
+//    kspTest(libs.hilt.compiler)
 
     testImplementation(libs.androidx.compose.ui.test)
     testImplementation(libs.androidx.work.testing)

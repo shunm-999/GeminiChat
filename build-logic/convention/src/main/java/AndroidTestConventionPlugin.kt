@@ -21,13 +21,15 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import com.shunm.build_logic.libs
+import com.shunm.build_logic.pluginId
 
 class AndroidTestConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
                 apply("com.android.test")
-                apply("org.jetbrains.kotlin.android")
+                apply(libs.pluginId("jetbrains-kotlin-android"))
+                apply(libs.pluginId("compose-compiler"))
             }
 
             extensions.configure<TestExtension> {
