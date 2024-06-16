@@ -1,4 +1,5 @@
 plugins {
+    alias(libs.plugins.jetbrains.kotlin.android) apply false // Plugin applied to allow module graph generation
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.android.test) apply false
@@ -17,5 +18,4 @@ plugins {
     alias(libs.plugins.secrets) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.module.graph) apply true
-    alias(libs.plugins.jetbrains.kotlin.android) apply false // Plugin applied to allow module graph generation
 }

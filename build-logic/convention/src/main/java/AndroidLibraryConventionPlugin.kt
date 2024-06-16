@@ -32,7 +32,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.library")
-                apply("org.jetbrains.kotlin.android")
+                apply(libs.pluginId("jetbrains-kotlin-android"))
+                apply(libs.pluginId("compose-compiler"))
                 apply(libs.pluginId("ktlint-gradle"))
                 apply("kotlinx-serialization")
                 apply("geminiChat.android.lint")
@@ -43,9 +44,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 defaultConfig.targetSdk = 34
                 testOptions.animationsDisabled = true
                 configureGradleManagedDevices(this)
-                // The resource prefix is derived from the module name,
-                // so resources inside ":core:module1" must be prefixed with "core_module1_"
-                resourcePrefix = path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_").lowercase() + "_"
             }
             extensions.configure<LibraryAndroidComponentsExtension> {
                 disableUnnecessaryAndroidTests(target)

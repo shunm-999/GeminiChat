@@ -71,13 +71,13 @@ internal fun Project.configureKotlinJvm() {
  * Configure base Kotlin options
  */
 private fun Project.configureKotlin() {
-    configureKotlinCompiler {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
-            val warningsAsErrors: String? by project
-            allWarningsAsErrors.set(warningsAsErrors.toBoolean())
-            freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-        }
-    }
+//    configureKotlinCompiler {
+//        compilerOptions {
+//            jvmTarget.set(JvmTarget.JVM_17)
+//            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+//            val warningsAsErrors: String? by project
+//            allWarningsAsErrors.set(warningsAsErrors.toBoolean())
+//            freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+//        }
+//    }
 }
