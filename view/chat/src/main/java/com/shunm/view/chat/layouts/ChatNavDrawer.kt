@@ -2,6 +2,7 @@ package com.shunm.view.chat.layouts
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +32,8 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -38,6 +41,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.shunm.common_compose.ext.useIf
 import com.shunm.common_compose.theme.GeminiChatTheme
 import com.shunm.view.chat.R
 
@@ -93,7 +97,7 @@ internal sealed interface ChatNavigationDrawerContentScope {
 }
 
 @Composable
-internal fun ChatNavigationDrawer(
+internal fun ChatNavigationLayout(
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     drawerContent: DrawerContentScope.() -> Unit,
@@ -197,18 +201,34 @@ internal fun DrawerContentHeaderScope.CreateThreadButton(onClick: () -> Unit) {
 
 @Composable
 internal fun DrawerContentItemScope.NavigationItem(
+    isSelected: Boolean,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Text(
+    val backgroundColor =
+        MaterialTheme.colorScheme.primary.copy(
+            alpha = 0.2f,
+        )
+    Box(
         modifier =
             modifier
-                .padding(vertical = 8.dp)
+                .useIf(isSelected) {
+                    drawBehind {
+                        drawRoundRect(
+                            color = backgroundColor,
+                            cornerRadius = CornerRadius(8.dp.toPx()),
+                        )
+                    }
+                }
+                .padding(vertical = 8.dp, horizontal = 4.dp)
                 .clickable(onClick = onClick),
-        text = text,
-        style = MaterialTheme.typography.headlineSmall,
-    )
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineSmall,
+        )
+    }
 }
 
 private class DrawerPreviewParameterProvider : PreviewParameterProvider<DrawerValue> {
@@ -227,7 +247,7 @@ private fun ChatNavigationDrawerPreview(
 ) {
     GeminiChatTheme {
         Surface {
-            ChatNavigationDrawer(
+            ChatNavigationLayout(
                 drawerState = rememberDrawerState(drawerValue),
                 drawerContent = {
                     header {
@@ -237,6 +257,7 @@ private fun ChatNavigationDrawerPreview(
                     listOf("Thread1", "Thread2", "Thread3").forEach { thread ->
                         content {
                             NavigationItem(
+                                isSelected = false,
                                 text = thread,
                                 onClick = {
                                 },

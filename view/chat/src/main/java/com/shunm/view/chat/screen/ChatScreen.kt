@@ -28,7 +28,7 @@ import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.R
 import com.shunm.view.chat.components.ChatInputField
 import com.shunm.view.chat.components.MessageList
-import com.shunm.view.chat.layouts.ChatNavigationDrawer
+import com.shunm.view.chat.layouts.ChatNavigationLayout
 import com.shunm.view.chat.layouts.CreateThreadButton
 import com.shunm.view.chat.layouts.NavigationItem
 import com.shunm.view.chat.navigation.ChatRoute
@@ -62,7 +62,7 @@ internal fun ChatScreen(
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    ChatNavigationDrawer(
+    ChatNavigationLayout(
         drawerState = drawerState,
         drawerContent = {
             header {
@@ -77,19 +77,23 @@ internal fun ChatScreen(
                     }
                 }
             }
-            drawerUiStateHolder.uiState.threadList.forEach { thread ->
-                content {
-                    NavigationItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = thread.title,
-                        onClick = {
-                            navigate(
-                                ChatRoute(
-                                    threadId = thread.id.value,
-                                ),
-                            )
-                        },
-                    )
+            with(drawerUiStateHolder) {
+                uiState.threadList.forEach { thread ->
+                    content {
+                        NavigationItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            isSelected = thread.id == uiState.currentThread?.id,
+                            text = thread.title,
+                            onClick = {
+                                selectThread(thread)
+                                navigate(
+                                    ChatRoute(
+                                        threadId = thread.id.value,
+                                    ),
+                                )
+                            },
+                        )
+                    }
                 }
             }
         },

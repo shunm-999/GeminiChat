@@ -1,10 +1,12 @@
 package com.shunm.view.chat.viewmodel
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shunm.domain.chat.model.ThreadSummary
 import com.shunm.domain.chat.usecase.GetThreadListUseCase
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
@@ -21,17 +23,22 @@ internal class DrawerViewModel
     constructor(
         private val getThreadListUseCase: GetThreadListUseCase,
     ) : ViewModel(), DrawerUiStateHolder {
-        override var uiState: DrawerUiState by mutableStateOf(DrawerUiState(emptyList()))
+        private var currentThread: ThreadSummary? by mutableStateOf(null)
+        private var threadList: List<ThreadSummary> by mutableStateOf(emptyList())
+
+        override val uiState: DrawerUiState by derivedStateOf {
+            DrawerUiState(
+                currentThread = currentThread,
+                threadList = threadList,
+            )
+        }
 
         init {
             viewModelScope.launch {
                 getThreadListUseCase().collectLatest {
                     when (it) {
                         is Ok -> {
-                            uiState =
-                                DrawerUiState(
-                                    threadList = it.value,
-                                )
+                            threadList = it.value
                         }
 
                         is Err -> {
@@ -39,5 +46,9 @@ internal class DrawerViewModel
                     }
                 }
             }
+        }
+
+        override fun selectThread(thread: ThreadSummary) {
+            currentThread = thread
         }
     }
