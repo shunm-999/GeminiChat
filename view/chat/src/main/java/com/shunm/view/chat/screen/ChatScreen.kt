@@ -103,15 +103,17 @@ internal fun ChatScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = {
-                            coroutineScope.launch {
-                                drawerState.open()
+                        if (needNavigationIcon) {
+                            IconButton(onClick = {
+                                coroutineScope.launch {
+                                    drawerState.open()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.DensityMedium,
+                                    contentDescription = null,
+                                )
                             }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.DensityMedium,
-                                contentDescription = null,
-                            )
                         }
                     },
                     actions = {

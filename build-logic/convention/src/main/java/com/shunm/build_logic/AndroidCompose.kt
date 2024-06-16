@@ -43,6 +43,7 @@ internal fun Project.configureAndroidCompose(
             freeCompilerArgs += buildComposeMetricsParameters()
             freeCompilerArgs += stabilityConfiguration()
             freeCompilerArgs += strongSkippingConfiguration()
+            freeCompilerArgs += contextReceiversConfiguration()
         }
     }
 }
@@ -83,3 +84,5 @@ private fun Project.strongSkippingConfiguration() = listOf(
     "-P",
     "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
 )
+
+private fun Project.contextReceiversConfiguration() = listOf("-Xcontext-receivers")
