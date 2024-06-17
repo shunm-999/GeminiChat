@@ -16,4 +16,7 @@ dependencies {
     implementation(libs.androidx.compose.material3.adaptive.navigation)
     implementation(libs.androidx.compose.material3.navigationSuite)
     implementation(libs.androidx.compose.material3.windowSizeClass)
+
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
 }

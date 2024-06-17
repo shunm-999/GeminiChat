@@ -1,5 +1,6 @@
 package com.shunm.view.chat.components
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.shunm.common_compose.components.FilledInputField
 import com.shunm.common_compose.components.PlaceHolder
@@ -42,6 +45,7 @@ internal fun ChatInputField(
     onTextChange: (String) -> Unit,
     onSubmit: (String) -> Unit,
     modifier: Modifier = Modifier,
+    imageList: List<Uri> = emptyList(),
     optionVisible: Boolean = true,
     optionVisibleChange: (Boolean) -> Unit = {},
     onClickCamera: () -> Unit = {},
@@ -77,8 +81,9 @@ internal fun ChatInputField(
         }
         FilledInputField(
             modifier = Modifier.weight(1f),
-            value = text,
-            onValueChange = onTextChange,
+            text = text,
+            onTextChange = onTextChange,
+            imageList = imageList,
             onClick = {
                 optionVisibleChange(false)
             },
@@ -175,15 +180,56 @@ private fun OptionAddButton(onClick: () -> Unit) {
     }
 }
 
-@Preview
+private data class ChatInputFieldPreviewContext(
+    val text: String,
+    val optionVisible: Boolean,
+    val imageList: List<Uri>,
+)
+
+private class ChatInputFieldPreviewParameterProvider :
+    PreviewParameterProvider<ChatInputFieldPreviewContext> {
+    private val textList = listOf<String>("", "Hello, World!")
+
+    private val optionVisibleList = listOf<Boolean>(true, false)
+
+    private val imageList =
+        listOf<List<Uri>>(
+            emptyList(),
+            listOf(
+                Uri.parse("https://picsum.photos/200/300"),
+            ),
+        )
+
+    override val values: Sequence<ChatInputFieldPreviewContext> =
+        sequence {
+            for (text in textList) {
+                for (optionVisible in optionVisibleList) {
+                    for (image in imageList) {
+                        yield(
+                            ChatInputFieldPreviewContext(
+                                text = text,
+                                optionVisible = optionVisible,
+                                imageList = image,
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+}
+
+@PreviewLightDark
 @Composable
-private fun ChatInputFieldPreview() {
+private fun ChatInputFieldPreview(
+    @PreviewParameter(ChatInputFieldPreviewParameterProvider::class) context: ChatInputFieldPreviewContext,
+) {
     GeminiChatTheme {
         Surface {
-            var optionVisible: Boolean by remember { mutableStateOf(false) }
+            var optionVisible: Boolean by remember { mutableStateOf(context.optionVisible) }
             ChatInputField(
-                text = "",
+                text = context.text,
                 onTextChange = { },
+                imageList = context.imageList,
                 onSubmit = { },
                 optionVisible = optionVisible,
                 optionVisibleChange = {

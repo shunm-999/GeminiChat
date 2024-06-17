@@ -1,6 +1,6 @@
 package com.shunm.view.chat.uiState
 
-import android.graphics.Bitmap
+import android.net.Uri
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.ThreadDetail
 
@@ -22,11 +22,12 @@ internal val ChatUiState.messageList: List<Message>
     get() = (this as? ChatUiState.Reedy.Content)?.threadDetail?.messages.orEmpty()
 
 internal data class ChatInputUiState(
-    val text: String,
-    val image: Bitmap? = null,
+    val text: String = "",
+    val imageList: List<Uri> = emptyList(),
+    val optionVisible: Boolean = false,
 ) {
     companion object {
-        val Empty = ChatInputUiState("", null)
+        val Empty = ChatInputUiState()
     }
 }
 

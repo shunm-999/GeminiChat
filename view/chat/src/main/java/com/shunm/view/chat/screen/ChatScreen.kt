@@ -147,8 +147,15 @@ internal fun ChatScreen(
                                 copy(text = text)
                             }
                         },
+                        imageList = uiStateHolder.inputUiState.imageList,
                         onSubmit = {
                             uiStateHolder.submit()
+                        },
+                        optionVisible = uiStateHolder.inputUiState.optionVisible,
+                        optionVisibleChange = { visible ->
+                            uiStateHolder.update {
+                                copy(optionVisible = visible)
+                            }
                         },
                     )
                 }

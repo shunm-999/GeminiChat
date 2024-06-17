@@ -111,7 +111,7 @@ internal class ChatViewModel
                                     ),
                             ),
                         text = inputUiState.text,
-                        image = inputUiState.image,
+                        image = null,
                         createAt = Clock.System.now(),
                     )
                 createMessageUseCase(messageCreation)
