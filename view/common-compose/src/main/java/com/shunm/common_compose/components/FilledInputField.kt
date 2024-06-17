@@ -1,5 +1,7 @@
 package com.shunm.common_compose.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardVoice
@@ -10,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +32,7 @@ fun FilledInputField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
     placeholder:
         @Composable()
         (FilledInputFieldScope.() -> Unit)? = null,
@@ -37,6 +41,13 @@ fun FilledInputField(
         (FilledInputFieldScope.() -> Unit)? = null,
 ) {
     with(FilledInputFieldScope) {
+        val interactionSource = remember { MutableInteractionSource() }
+        val isPressed by interactionSource.collectIsPressedAsState()
+
+        LaunchedEffect(isPressed) {
+            onClick()
+        }
+
         TextField(
             modifier = modifier,
             value = value,
@@ -49,6 +60,7 @@ fun FilledInputField(
                 trailingIcon?.let {
                     { it() }
                 },
+            interactionSource = interactionSource,
             shape = RoundedCornerShape(16.dp),
             colors =
                 TextFieldDefaults.colors(
