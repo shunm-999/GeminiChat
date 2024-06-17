@@ -46,6 +46,7 @@ internal fun ChatInputField(
     onSubmit: (String) -> Unit,
     modifier: Modifier = Modifier,
     imageList: List<Uri> = emptyList(),
+    onImageListChange: (List<Uri>) -> Unit = {},
     optionVisible: Boolean = true,
     optionVisibleChange: (Boolean) -> Unit = {},
     onClickCamera: () -> Unit = {},
@@ -84,6 +85,7 @@ internal fun ChatInputField(
             text = text,
             onTextChange = onTextChange,
             imageList = imageList,
+            onImageListChange = onImageListChange,
             onClick = {
                 optionVisibleChange(false)
             },

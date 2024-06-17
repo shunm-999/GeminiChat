@@ -148,6 +148,11 @@ internal fun ChatScreen(
                             }
                         },
                         imageList = uiStateHolder.inputUiState.imageList,
+                        onImageListChange = { imageList ->
+                            uiStateHolder.update {
+                                copy(imageList = imageList)
+                            }
+                        },
                         onSubmit = {
                             uiStateHolder.submit()
                         },
