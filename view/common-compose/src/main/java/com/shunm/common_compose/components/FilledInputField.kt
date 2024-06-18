@@ -67,18 +67,18 @@ fun FilledInputField(
         }
         Column(
             modifier =
-            modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(
-                    MaterialTheme.colorScheme.surfaceVariant,
-                ),
+                modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                    ),
         ) {
             if (imageList.isNotEmpty()) {
                 InputImageRow(
                     imageList = imageList,
                     onDelete = { imageUrl ->
                         onImageListChange(imageList - imageUrl)
-                    }
+                    },
                 )
             }
             TextField(
@@ -86,13 +86,13 @@ fun FilledInputField(
                 value = text,
                 onValueChange = onTextChange,
                 placeholder =
-                placeholder?.let {
-                    { it() }
-                },
+                    placeholder?.let {
+                        { it() }
+                    },
                 trailingIcon =
-                trailingIcon?.let {
-                    { it() }
-                },
+                    trailingIcon?.let {
+                        { it() }
+                    },
                 interactionSource = interactionSource,
                 shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.transparentColors(),
@@ -122,14 +122,13 @@ private fun InputImage(
     onDelete: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier.size(40.dp)
+        modifier = Modifier.size(40.dp),
     ) {
         val painter = rememberAsyncImagePainter(image)
         val state = painter.state
 
         when (state) {
             is AsyncImagePainter.State.Error -> {
-
             }
 
             is AsyncImagePainter.State.Loading -> {
@@ -140,19 +139,19 @@ private fun InputImage(
                 Image(
                     modifier = Modifier.size(40.dp),
                     painter = painter,
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 IconButton(
                     onClick = onDelete,
                     modifier =
-                    Modifier
-                        .size(12.dp)
-                        .clip(CircleShape)
-                        .background(
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                        .align(Alignment.TopEnd)
-                        .offset(x = 4.dp, y = (-4).dp),
+                        Modifier
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(
+                                color = MaterialTheme.colorScheme.error,
+                            )
+                            .align(Alignment.TopEnd)
+                            .offset(x = 4.dp, y = (-4).dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
@@ -177,7 +176,7 @@ private fun InputImageRow(
         imageList.forEach { imageUrl ->
             InputImage(
                 image = imageUrl,
-                onDelete = { onDelete(imageUrl) }
+                onDelete = { onDelete(imageUrl) },
             )
         }
     }

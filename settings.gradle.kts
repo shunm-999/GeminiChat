@@ -22,6 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "GeminiChat"
 include(":app")
+include(":view:common")
 include(":view:common-compose")
 include(":view:chat")
 include(":domain:common")
