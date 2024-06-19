@@ -12,7 +12,7 @@ import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.usecase.CreateMessageUseCase
 import com.shunm.domain.chat.usecase.CreateThreadUseCase
 import com.shunm.domain.chat.usecase.GetThreadDetailUseCase
-import com.shunm.domain.common.ktx.format
+import com.shunm.domain.common.ext.format
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
 import com.shunm.view.chat.uiState.ChatInputUiState
@@ -111,7 +111,7 @@ internal class ChatViewModel
                                     ),
                             ),
                         text = inputUiState.text,
-                        image = null,
+                        imageList = inputUiState.imageList,
                         createAt = Clock.System.now(),
                     )
                 createMessageUseCase(messageCreation)

@@ -1,4 +1,4 @@
-package com.shunm.domain.common.ktx
+package com.shunm.domain.common.ext
 
 import kotlinx.datetime.Instant
 import java.text.SimpleDateFormat

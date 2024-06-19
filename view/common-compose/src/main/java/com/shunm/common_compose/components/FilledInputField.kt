@@ -1,12 +1,11 @@
 package com.shunm.common_compose.components
 
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -42,7 +41,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import com.shunm.common_compose.theme.GeminiChatTheme
 
 object FilledInputFieldScope
@@ -121,44 +121,34 @@ private fun InputImage(
     image: Uri,
     onDelete: () -> Unit = {},
 ) {
-    Box(
-        modifier = Modifier.size(40.dp),
+    SubcomposeAsyncImage(
+        model = image,
+        contentDescription = null,
+        clipToBounds = false,
     ) {
-        val painter = rememberAsyncImagePainter(image)
         val state = painter.state
-
-        when (state) {
-            is AsyncImagePainter.State.Error -> {
-            }
-
-            is AsyncImagePainter.State.Loading -> {
-                CircularProgressIndicator()
-            }
-
-            AsyncImagePainter.State.Empty, is AsyncImagePainter.State.Success -> {
-                Image(
-                    modifier = Modifier.size(40.dp),
-                    painter = painter,
-                    contentDescription = null,
-                )
-                IconButton(
-                    onClick = onDelete,
-                    modifier =
-                        Modifier
-                            .size(12.dp)
-                            .clip(CircleShape)
-                            .background(
-                                color = MaterialTheme.colorScheme.error,
-                            )
-                            .align(Alignment.TopEnd)
-                            .offset(x = 4.dp, y = (-4).dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = null,
-                    )
-                }
-            }
+        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+            CircularProgressIndicator()
+        } else {
+            SubcomposeAsyncImageContent(
+                modifier = Modifier.size(40.dp),
+            )
+            Icon(
+                modifier =
+                    Modifier
+                        .offset(2.dp, (-2).dp)
+                        .size(12.dp)
+                        .clip(CircleShape)
+                        .background(
+                            color = MaterialTheme.colorScheme.surface,
+                        )
+                        .clickable {
+                            onDelete()
+                        }
+                        .align(Alignment.TopEnd),
+                imageVector = Icons.Default.Close,
+                contentDescription = null,
+            )
         }
     }
 }

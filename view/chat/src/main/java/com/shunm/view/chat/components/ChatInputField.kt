@@ -5,9 +5,12 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -32,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shunm.common_compose.components.FilledInputField
 import com.shunm.common_compose.components.PlaceHolder
@@ -62,26 +66,28 @@ internal fun ChatInputField(
                     horizontal = 16.dp,
                 )
                 .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        AnimatedContent(targetState = optionVisible, label = "") { isVisible ->
-            if (isVisible) {
-                Options(
-                    onClickCamera = onClickCamera,
-                    onClickPhoto = onClickPhoto,
-                    onClickFolder = onClickFolder,
-                )
-            } else {
-                OptionAddButton(
-                    onClick = {
-                        optionVisibleChange(true)
-                    },
-                )
+        CenterVertically(56.dp) {
+            AnimatedContent(targetState = optionVisible, label = "") { isVisible ->
+                if (isVisible) {
+                    Options(
+                        onClickCamera = onClickCamera,
+                        onClickPhoto = onClickPhoto,
+                        onClickFolder = onClickFolder,
+                    )
+                } else {
+                    OptionAddButton(
+                        onClick = {
+                            optionVisibleChange(true)
+                        },
+                    )
+                }
             }
         }
         FilledInputField(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).wrapContentHeight(),
             text = text,
             onTextChange = onTextChange,
             imageList = imageList,
@@ -98,12 +104,27 @@ internal fun ChatInputField(
                 VoiceRecognitionIcon { }
             },
         )
-        SubmitButton(
-            onClick = {
-                keyboardController?.hide()
-                onSubmit(text)
-            },
-        )
+        CenterVertically(56.dp) {
+            SubmitButton(
+                onClick = {
+                    keyboardController?.hide()
+                    onSubmit(text)
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun CenterVertically(
+    height: Dp,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = Modifier.height(height),
+        verticalArrangement = Arrangement.Center,
+    ) {
+        content()
     }
 }
 

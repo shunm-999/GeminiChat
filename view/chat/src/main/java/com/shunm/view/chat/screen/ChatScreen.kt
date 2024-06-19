@@ -1,12 +1,12 @@
 package com.shunm.view.chat.screen
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -92,15 +92,16 @@ internal fun ChatScreen(
                     },
                 )
             },
-            bottomBar = {
+        ) {
+            Column {
+                ChatScreenContent(
+                    modifier = Modifier.weight(1f),
+                    uiStateHolder = uiStateHolder,
+                )
                 ChatBottomBar(
                     uiStateHolder = uiStateHolder,
                 )
-            },
-        ) {
-            ChatScreenContent(
-                uiStateHolder = uiStateHolder,
-            )
+            }
         }
     }
 }
@@ -183,43 +184,46 @@ private fun ChatBottomBar(uiStateHolder: ChatUiStateHolder) {
     val coroutineScope = rememberCoroutineScope()
     val photoPicker = rememberPhotoPicker()
 
-    BottomAppBar(
+    ChatInputField(
         modifier = Modifier.imePadding(),
-    ) {
-        ChatInputField(
-            text = uiStateHolder.inputUiState.text,
-            onTextChange = { text ->
-                uiStateHolder.update {
-                    copy(text = text)
-                }
-            },
-            imageList = uiStateHolder.inputUiState.imageList,
-            onImageListChange = { imageList ->
-                uiStateHolder.update {
-                    copy(imageList = imageList)
-                }
-            },
-            onSubmit = {
-                uiStateHolder.submit()
-            },
-            optionVisible = uiStateHolder.inputUiState.optionVisible,
-            optionVisibleChange = { visible ->
-                uiStateHolder.update {
-                    copy(optionVisible = visible)
-                }
-            },
-            onClickPhoto = {
-                coroutineScope.launch {
-                    when (val result = photoPicker.pickSingleMedia()) {
-                        is Err -> {
-                        }
-                        is Ok -> {
+        text = uiStateHolder.inputUiState.text,
+        onTextChange = { text ->
+            uiStateHolder.update {
+                copy(text = text)
+            }
+        },
+        imageList = uiStateHolder.inputUiState.imageList,
+        onImageListChange = { imageList ->
+            uiStateHolder.update {
+                copy(imageList = imageList)
+            }
+        },
+        onSubmit = {
+            uiStateHolder.submit()
+        },
+        optionVisible = uiStateHolder.inputUiState.optionVisible,
+        optionVisibleChange = { visible ->
+            uiStateHolder.update {
+                copy(optionVisible = visible)
+            }
+        },
+        onClickPhoto = {
+            coroutineScope.launch {
+                when (val result = photoPicker.pickSingleMedia()) {
+                    is Err -> {
+                    }
+
+                    is Ok -> {
+                        uiStateHolder.update {
+                            copy(
+                                imageList = imageList + result.value,
+                            )
                         }
                     }
                 }
-            },
-        )
-    }
+            }
+        },
+    )
 }
 
 @Composable

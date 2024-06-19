@@ -1,5 +1,6 @@
 package com.shunm.infra.chat.datasource
 
+import android.graphics.Bitmap
 import com.google.ai.client.generativeai.Chat
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.BlockThreshold
@@ -56,8 +57,18 @@ internal class GeminiRemoteDatasource
             chat = model.startChat()
         }
 
-        suspend fun sendMessage(message: String): ExceptionResult<String> {
-            val response = chat.sendMessage(message)
+        suspend fun sendMessage(
+            message: String,
+            imageList: List<Bitmap>,
+        ): ExceptionResult<String> {
+            val prompt =
+                content {
+                    text(message)
+                    imageList.forEach { image ->
+                        image(image)
+                    }
+                }
+            val response = chat.sendMessage(prompt)
             return Ok(response.text ?: "")
         }
     }

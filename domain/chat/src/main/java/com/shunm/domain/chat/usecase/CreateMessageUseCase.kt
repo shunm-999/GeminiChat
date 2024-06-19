@@ -23,7 +23,13 @@ class CreateMessageUseCase
             }
 
             val modelResponse =
-                when (val result = geminiRepository.sendMessage(messageCreation.text)) {
+                when (
+                    val result =
+                        geminiRepository.sendMessage(
+                            message = messageCreation.text,
+                            imageList = messageCreation.imageList,
+                        )
+                ) {
                     is Ok -> result.value
                     is Err -> return Err(result.error)
                 }
@@ -32,6 +38,7 @@ class CreateMessageUseCase
                     threadId = messageCreation.threadId,
                     sender = Message.Sender.Model,
                     text = modelResponse,
+                    imageList = emptyList(),
                     createAt = Clock.System.now(),
                 )
             return when (val result = messageRepository.createMessage(modelMessageCreation)) {
