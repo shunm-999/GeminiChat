@@ -4,6 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
@@ -15,10 +16,6 @@ internal fun Project.configureAndroidCompose(
     commonExtension.apply {
         buildFeatures {
             compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
         }
 
         dependencies {
@@ -38,12 +35,10 @@ internal fun Project.configureAndroidCompose(
         }
     }
 
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            freeCompilerArgs += buildComposeMetricsParameters()
-            freeCompilerArgs += stabilityConfiguration()
-            freeCompilerArgs += strongSkippingConfiguration()
-            freeCompilerArgs += contextReceiversConfiguration()
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.addAll(buildComposeMetricsParameters())
+            freeCompilerArgs.addAll(contextReceiversConfiguration())
         }
     }
 }
@@ -74,15 +69,5 @@ private fun Project.buildComposeMetricsParameters(): List<String> {
 
     return metricParameters.toList()
 }
-
-private fun Project.stabilityConfiguration() = listOf(
-    "-P",
-    "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${project.rootDir.absolutePath}/compose_compiler_config.conf",
-)
-
-private fun Project.strongSkippingConfiguration() = listOf(
-    "-P",
-    "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
-)
 
 private fun Project.contextReceiversConfiguration() = listOf("-Xcontext-receivers")

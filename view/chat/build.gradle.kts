@@ -7,6 +7,10 @@ android {
     namespace = "com.shunm.view.chat"
 }
 
+composeCompiler {
+    enableStrongSkippingMode = true
+}
+
 dependencies {
     implementation(project(":domain:common"))
     implementation(project(":domain:chat"))
