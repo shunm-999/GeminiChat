@@ -10,6 +10,10 @@ android {
     namespace = "com.shunm.geminiChat.view.common_compose"
 }
 
+composeCompiler {
+    enableStrongSkippingMode = true
+}
+
 dependencies {
 
     implementation(libs.androidx.browser)

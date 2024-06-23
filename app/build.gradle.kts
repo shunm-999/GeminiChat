@@ -41,6 +41,10 @@ android {
     namespace = "com.shunm.geminichat"
 }
 
+composeCompiler {
+    enableStrongSkippingMode = true
+}
+
 dependencies {
     implementation(project(":view:common-compose"))
     implementation(project(":view:chat"))

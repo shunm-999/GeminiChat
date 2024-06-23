@@ -17,10 +17,6 @@ internal fun Project.configureAndroidCompose(
             compose = true
         }
 
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
-        }
-
         dependencies {
             val bom = libs.findLibrary("androidx-compose-bom").get()
             add("implementation", platform(bom))
@@ -41,8 +37,6 @@ internal fun Project.configureAndroidCompose(
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             freeCompilerArgs += buildComposeMetricsParameters()
-            freeCompilerArgs += stabilityConfiguration()
-            freeCompilerArgs += strongSkippingConfiguration()
             freeCompilerArgs += contextReceiversConfiguration()
         }
     }
@@ -74,15 +68,5 @@ private fun Project.buildComposeMetricsParameters(): List<String> {
 
     return metricParameters.toList()
 }
-
-private fun Project.stabilityConfiguration() = listOf(
-    "-P",
-    "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${project.rootDir.absolutePath}/compose_compiler_config.conf",
-)
-
-private fun Project.strongSkippingConfiguration() = listOf(
-    "-P",
-    "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
-)
 
 private fun Project.contextReceiversConfiguration() = listOf("-Xcontext-receivers")
