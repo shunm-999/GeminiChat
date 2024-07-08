@@ -1,6 +1,5 @@
 package com.shunm.domain.chat.model
 
-import android.graphics.Bitmap
 import kotlinx.datetime.Instant
 
 data class MessageId(val value: Long)
@@ -9,7 +8,7 @@ data class Message(
     val id: MessageId,
     val sender: Sender,
     val text: String,
-    val image: Bitmap? = null,
+    val imageList: List<Image>,
     val createAt: Instant,
 ) {
     sealed interface Sender {

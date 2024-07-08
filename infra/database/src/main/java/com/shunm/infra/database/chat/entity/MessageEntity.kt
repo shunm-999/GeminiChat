@@ -8,15 +8,14 @@ import androidx.room.TypeConverter
 
 @Entity(
     tableName = "messages",
-    foreignKeys =
-        arrayOf(
-            ForeignKey(
-                entity = ThreadEntity::class,
-                parentColumns = arrayOf("id"),
-                childColumns = arrayOf("thread_id"),
-                onDelete = ForeignKey.CASCADE,
-            ),
+    foreignKeys = [
+        ForeignKey(
+            entity = ThreadEntity::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("thread_id"),
+            onDelete = ForeignKey.CASCADE,
         ),
+    ],
 )
 data class MessageEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,

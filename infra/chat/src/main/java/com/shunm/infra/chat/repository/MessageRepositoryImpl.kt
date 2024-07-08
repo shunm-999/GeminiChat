@@ -9,8 +9,11 @@ import com.shunm.domain.common.coroutine.Dispatcher
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.ExceptionResult
 import com.shunm.domain.common.model.Ok
+import com.shunm.infra.database.chat.dao.ImageDao
 import com.shunm.infra.database.chat.dao.MessageDao
+import com.shunm.infra.database.chat.dto.ImageDto
 import com.shunm.infra.database.chat.dto.MessageDto
+import com.shunm.infra.database.util.TransactionManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,7 +24,9 @@ internal class MessageRepositoryImpl
     @Inject
     constructor(
         @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+        private val transactionManager: TransactionManager,
         private val messageDao: MessageDao,
+        private val imageDao: ImageDao,
     ) : MessageRepository {
         override suspend fun getMessages(threadId: Long): ExceptionResult<List<Message>> {
             return withContext(ioDispatcher) {
@@ -48,9 +53,18 @@ internal class MessageRepositoryImpl
         override suspend fun createMessage(messageCreation: MessageCreation): ExceptionResult<MessageId> {
             return withContext(ioDispatcher) {
                 try {
-                    with(MessageDto) {
-                        val messageEntity = messageCreation.toEntity()
-                        messageDao.insert(messageEntity)
+                    transactionManager.withTransaction {
+                        val messageEntity =
+                            with(MessageDto) {
+                                messageCreation.toEntity()
+                            }
+                        val messageId = messageDao.insert(messageEntity)
+
+                        val imageEntityList =
+                            with(ImageDto) {
+                                messageCreation.toEntityList(messageId)
+                            }
+                        imageDao.insert(imageEntityList)
                         Ok(MessageId(messageEntity.id))
                     }
                 } catch (e: Exception) {

@@ -1,9 +1,14 @@
 package com.shunm.infra.database.chat.dto
 
+import android.net.Uri
 import com.shunm.domain.chat.input_data.MessageCreation
+import com.shunm.domain.chat.model.Image
+import com.shunm.domain.chat.model.ImageId
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.MessageId
+import com.shunm.infra.database.chat.entity.ImageEntity
 import com.shunm.infra.database.chat.entity.MessageEntity
+import com.shunm.infra.database.chat.entity.MessageWithImages
 import kotlinx.datetime.Instant
 
 object MessageDto {
@@ -35,11 +40,13 @@ object MessageDto {
         )
     }
 
-    fun MessageEntity.toModel(): Message {
+    fun MessageWithImages.toModel(): Message {
+        val message = this.message
+        val imageList = this.images.map { it.toModel() }
         return Message(
-            id = MessageId(this.id),
+            id = MessageId(message.id),
             sender =
-                when (this.sender) {
+                when (message.sender) {
                     MessageEntity.SenderType.USER ->
                         Message.Sender.User(
                             com.shunm.domain.chat.model.User("User"),
@@ -47,8 +54,16 @@ object MessageDto {
 
                     MessageEntity.SenderType.MODEL -> Message.Sender.Model
                 },
-            text = this.text,
-            createAt = Instant.fromEpochMilliseconds(this.createAt),
+            text = message.text,
+            imageList = imageList,
+            createAt = Instant.fromEpochMilliseconds(message.createAt),
+        )
+    }
+
+    fun ImageEntity.toModel(): Image {
+        return Image(
+            id = ImageId(this.id),
+            url = Uri.parse(this.url),
         )
     }
 }

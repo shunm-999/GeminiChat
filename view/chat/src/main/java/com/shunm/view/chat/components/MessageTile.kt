@@ -192,6 +192,7 @@ private fun MessageTilePreview() {
                             ),
                         ),
                     text = "Hello, World!",
+                    imageList = emptyList(),
                     createAt = Instant.DISTANT_PAST,
                 ),
         )

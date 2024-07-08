@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.shunm.infra.database.chat.entity.ThreadEntity
 import com.shunm.infra.database.chat.entity.ThreadWithMessages
@@ -23,9 +24,11 @@ interface ThreadDao {
     @Query("SELECT * FROM threads WHERE id = :id")
     fun selectByIdFlow(id: Long): Flow<ThreadEntity>
 
+    @Transaction
     @Query("SELECT * FROM threads WHERE id = :id")
     suspend fun selectByIdWithMessages(id: Long): ThreadWithMessages
 
+    @Transaction
     @Query("SELECT * FROM threads WHERE id = :id")
     fun selectByIdWithMessagesFlow(id: Long): Flow<ThreadWithMessages>
 
