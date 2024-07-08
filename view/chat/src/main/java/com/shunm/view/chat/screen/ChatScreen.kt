@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.shunm.common_compose.layouts.GeminiScaffold
 import com.shunm.common_compose.navigation.NavigateRoute
 import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.common_compose.util.rememberDocumentMediaSelector
 import com.shunm.common_compose.util.rememberPhotoPicker
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.common.model.Err
@@ -98,9 +99,11 @@ internal fun ChatScreen(
                     modifier = Modifier.weight(1f),
                     uiStateHolder = uiStateHolder,
                 )
-                ChatBottomBar(
-                    uiStateHolder = uiStateHolder,
-                )
+                ChatInputScope(
+                    stateHolder = uiStateHolder,
+                ) {
+                    ChatBottomBar()
+                }
             }
         }
     }
@@ -180,45 +183,48 @@ private fun ChatNavigationDrawerContentScope.ChatTopBar(openDrawer: () -> Unit) 
 }
 
 @Composable
-private fun ChatBottomBar(uiStateHolder: ChatUiStateHolder) {
+private fun ChatInputScope.ChatBottomBar() {
     val coroutineScope = rememberCoroutineScope()
     val photoPicker = rememberPhotoPicker()
+    val documentMediaSelector = rememberDocumentMediaSelector()
 
     ChatInputField(
         modifier = Modifier.imePadding(),
-        text = uiStateHolder.inputUiState.text,
-        onTextChange = { text ->
-            uiStateHolder.update {
-                copy(text = text)
-            }
+        text = text,
+        onTextChange = { newText ->
+            text = newText
         },
-        imageList = uiStateHolder.inputUiState.imageList,
-        onImageListChange = { imageList ->
-            uiStateHolder.update {
-                copy(imageList = imageList)
-            }
+        imageList = imageList,
+        onImageListChange = { newImageList ->
+            imageList = newImageList
         },
         onSubmit = {
-            uiStateHolder.submit()
+            submit()
         },
-        optionVisible = uiStateHolder.inputUiState.optionVisible,
+        optionVisible = optionVisible,
         optionVisibleChange = { visible ->
-            uiStateHolder.update {
-                copy(optionVisible = visible)
-            }
+            optionVisible = visible
         },
         onClickPhoto = {
             coroutineScope.launch {
-                when (val result = photoPicker.pickSingleMedia()) {
+                when (val result = photoPicker.pickMedia()) {
                     is Err -> {
                     }
 
                     is Ok -> {
-                        uiStateHolder.update {
-                            copy(
-                                imageList = imageList + result.value,
-                            )
-                        }
+                        imageList = imageList + result.value
+                    }
+                }
+            }
+        },
+        onClickFolder = {
+            coroutineScope.launch {
+                when (val result = documentMediaSelector.selectMedia()) {
+                    is Err -> {
+                    }
+
+                    is Ok -> {
+                        imageList = imageList + result.value
                     }
                 }
             }

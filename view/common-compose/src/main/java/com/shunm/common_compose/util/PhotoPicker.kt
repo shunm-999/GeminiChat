@@ -22,19 +22,20 @@ sealed interface PhotoPickerError {
     data object Unknown : PhotoPickerError
 }
 
-typealias PhotoPickerResult = Result<Uri, PhotoPickerError>
+typealias PhotoPickerResult = Result<List<Uri>, PhotoPickerError>
 
 sealed interface PhotoPicker {
-    suspend fun pickSingleMedia(): PhotoPickerResult
+    suspend fun pickMedia(): PhotoPickerResult
 }
 
 private class PhotoPickerImpl : PhotoPicker {
-    var launcher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>? = null
+    var launcher: ManagedActivityResultLauncher<PickVisualMediaRequest, List<Uri>>? = null
 
     private val mutex = Mutex()
-    private var safeSuspendContinuation: SafeSuspendContinuation<Uri, PhotoPickerError>? = null
+    private var safeSuspendContinuation: SafeSuspendContinuation<List<Uri>, PhotoPickerError>? =
+        null
 
-    override suspend fun pickSingleMedia(): PhotoPickerResult =
+    override suspend fun pickMedia(): PhotoPickerResult =
         mutex.withLock {
             safeSuspendCoroutine { continuation ->
                 safeSuspendContinuation = continuation
@@ -56,10 +57,10 @@ fun rememberPhotoPicker(): PhotoPicker {
             PhotoPickerImpl()
         }
     val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
             photoPicker.resume(
-                if (uri != null) {
-                    Ok(uri)
+                if (uris.isNotEmpty()) {
+                    Ok(uris)
                 } else {
                     Err(PhotoPickerError.NoMedia)
                 },
