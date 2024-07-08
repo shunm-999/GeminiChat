@@ -2,6 +2,7 @@ package com.shunm.view.chat.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -195,15 +196,18 @@ private fun MessageContent(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ImageRow(imageList: List<Image>) {
-    FlowRow(
-        modifier = Modifier.padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        imageList.forEach { image ->
-            ImageFrame(
-                modifier = Modifier.size(48.dp),
-                imageUri = image.imageUri,
-            )
+    BoxWithConstraints {
+        val imageSize = maxWidth / 3
+        FlowRow(
+            modifier = Modifier.padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            imageList.forEach { image ->
+                ImageFrame(
+                    modifier = Modifier.size(imageSize),
+                    imageUri = image.imageUri,
+                )
+            }
         }
     }
 }
