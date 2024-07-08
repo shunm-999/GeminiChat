@@ -6,8 +6,9 @@ import androidx.room.Relation
 data class ThreadWithMessages(
     @Embedded val thread: ThreadEntity,
     @Relation(
+        entity = MessageEntity::class,
         parentColumn = "id",
         entityColumn = "thread_id",
     )
-    val messages: List<MessageEntity>,
+    val messageWithImages: List<MessageWithImages>,
 )

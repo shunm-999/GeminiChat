@@ -28,7 +28,7 @@ object ThreadDto {
 
     fun ThreadWithMessages.toModel(): ThreadDetail {
         val thread = this.thread
-        val messages = this.messages.map { it.toModel() }
+        val messages = this.messageWithImages.map { it.toModel() }
         return ThreadDetail(
             id = ThreadId(thread.id),
             title = thread.title,
