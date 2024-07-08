@@ -6,5 +6,5 @@ data class ImageId(val value: Long)
 
 data class Image(
     val id: ImageId,
-    val url: Uri,
+    val imageUri: Uri,
 )

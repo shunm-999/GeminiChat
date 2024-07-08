@@ -87,7 +87,10 @@ internal fun ChatInputField(
             }
         }
         FilledInputField(
-            modifier = Modifier.weight(1f).wrapContentHeight(),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .wrapContentHeight(),
             text = text,
             onTextChange = onTextChange,
             imageList = imageList,
@@ -106,6 +109,7 @@ internal fun ChatInputField(
         )
         CenterVertically(56.dp) {
             SubmitButton(
+                enabled = text.isNotEmpty() || imageList.isNotEmpty(),
                 onClick = {
                     keyboardController?.hide()
                     onSubmit(text)
@@ -166,20 +170,36 @@ private fun Options(
 }
 
 @Composable
-private fun SubmitButton(onClick: () -> Unit) {
+private fun SubmitButton(
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    val alpha =
+        if (enabled) {
+            1.0f
+        } else {
+            0.7f
+        }
     IconButton(
+        enabled = enabled,
         onClick = onClick,
         modifier =
             Modifier
                 .clip(CircleShape)
                 .background(
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color =
+                        MaterialTheme.colorScheme.onSurface.copy(
+                            alpha = alpha,
+                        ),
                 ),
     ) {
         Icon(
             imageVector = Icons.Default.ArrowUpward,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.surface,
+            tint =
+                MaterialTheme.colorScheme.surface.copy(
+                    alpha = alpha,
+                ),
         )
     }
 }

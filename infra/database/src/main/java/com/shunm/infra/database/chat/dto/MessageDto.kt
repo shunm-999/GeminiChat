@@ -63,7 +63,7 @@ object MessageDto {
     fun ImageEntity.toModel(): Image {
         return Image(
             id = ImageId(this.id),
-            url = Uri.parse(this.url),
+            imageUri = Uri.parse(this.url),
         )
     }
 }

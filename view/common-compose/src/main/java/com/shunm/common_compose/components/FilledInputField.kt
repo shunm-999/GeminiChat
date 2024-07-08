@@ -2,22 +2,17 @@ package com.shunm.common_compose.components
 
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardVoice
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -40,9 +34,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
 import com.shunm.common_compose.theme.GeminiChatTheme
 
 object FilledInputFieldScope
@@ -116,43 +107,6 @@ fun FilledInputFieldScope.VoiceRecognitionIcon(onClick: () -> Unit) {
     }
 }
 
-@Composable
-private fun InputImage(
-    image: Uri,
-    onDelete: () -> Unit = {},
-) {
-    SubcomposeAsyncImage(
-        model = image,
-        contentDescription = null,
-        clipToBounds = false,
-    ) {
-        val state = painter.state
-        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-            CircularProgressIndicator()
-        } else {
-            SubcomposeAsyncImageContent(
-                modifier = Modifier.size(40.dp),
-            )
-            Icon(
-                modifier =
-                    Modifier
-                        .offset(2.dp, (-2).dp)
-                        .size(12.dp)
-                        .clip(CircleShape)
-                        .background(
-                            color = MaterialTheme.colorScheme.surface,
-                        )
-                        .clickable {
-                            onDelete()
-                        }
-                        .align(Alignment.TopEnd),
-                imageVector = Icons.Default.Close,
-                contentDescription = null,
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun InputImageRow(
@@ -164,9 +118,14 @@ private fun InputImageRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         imageList.forEach { imageUrl ->
-            InputImage(
-                image = imageUrl,
-                onDelete = { onDelete(imageUrl) },
+            ImageFrame(
+                modifier = Modifier.size(48.dp),
+                imageUri = imageUrl,
+                deleteIcon = {
+                    ImageDeleteIcon {
+                        onDelete(imageUrl)
+                    }
+                },
             )
         }
     }

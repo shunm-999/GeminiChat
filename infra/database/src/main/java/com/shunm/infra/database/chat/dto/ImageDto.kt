@@ -10,7 +10,7 @@ object ImageDto {
         return this.imageList.map {
             ImageEntity(
                 id = 0,
-                messageId = 0,
+                messageId = messageId,
                 url = it.toString(),
             )
         }
@@ -24,7 +24,7 @@ object ImageDto {
         return ImageEntity(
             id = this.id.value,
             messageId = 0,
-            url = this.url.toString(),
+            url = this.imageUri.toString(),
         )
     }
 }

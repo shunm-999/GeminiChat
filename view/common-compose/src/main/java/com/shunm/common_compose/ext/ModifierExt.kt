@@ -12,3 +12,14 @@ fun Modifier.useIf(
         this
     }
 }
+
+fun <T> Modifier.userIfNotNull(
+    value: T?,
+    apply: Modifier.(T) -> Modifier,
+): Modifier {
+    return if (value != null) {
+        this.apply(value)
+    } else {
+        this
+    }
+}
