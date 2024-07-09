@@ -12,6 +12,7 @@ composeCompiler {
 }
 
 dependencies {
+    implementation(project(":view:camera"))
     implementation(project(":domain:common"))
     implementation(project(":domain:chat"))
 
