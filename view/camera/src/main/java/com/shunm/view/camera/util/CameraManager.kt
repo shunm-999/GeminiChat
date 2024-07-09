@@ -1,27 +1,56 @@
 package com.shunm.view.camera.util
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import com.shunm.domain.common.model.Err
+import com.shunm.domain.common.model.Result
 
-internal class CameraManager {
-    var isActive: Boolean by mutableStateOf(false)
-        private set
+sealed interface CameraProviderError {
+    data object NoMedia : CameraProviderError
+}
 
-    fun activate() {
-        isActive = true
-    }
+typealias CameraProviderErrorResult = Result<Uri, CameraProviderError>
 
-    fun deactivate() {
-        isActive = false
+sealed interface CameraManager {
+    suspend fun launchCamera(): CameraProviderErrorResult
+}
+
+private data class CameraManagerImpl(
+    private val cameraNavigator: CameraNavigator,
+) : CameraManager {
+    override suspend fun launchCamera(): CameraProviderErrorResult {
+        cameraNavigator.activate()
+        return Err(CameraProviderError.NoMedia)
     }
 }
 
 @Composable
-internal fun rememberCameraManager(): CameraManager {
-    return remember {
-        CameraManager()
-    }
+fun rememberCameraManager(): CameraManager {
+    val cameraManager = LocalCameraNavigator.current
+    return CameraManagerImpl(
+        cameraNavigator = cameraManager,
+    )
 }
+
+// DisplayManager
+// DisplayManager.DisplayListener register / unregister
+// CameraExecutor
+// WindowManager / getCurrentWindowMetrics().bounds
+
+// updateCameraUi
+// - takePicture
+// - cameraSwitch
+// setUpCamera
+// - cameraProvider
+// - updateCameraSwitchButton
+// - bindCameraUseCases
+// updateCameraSwitchButton
+// bindCameraUseCases
+// - cameraProvider
+// - cameraSelector
+// - Preview
+// - ImageCapture
+// - ImageAnalysis
+// - CameraProvider.unbindAll
+// - CameraProvider.bindToLifecycle
+// - Preview.setSurfaceProvider
