@@ -3,11 +3,12 @@ package com.shunm.view.camera.util
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 
-internal class CameraNavigator {
-    var isActive: Boolean by mutableStateOf(false)
+internal class CameraNavigator(initialActive: Boolean) {
+    var isActive: Boolean by mutableStateOf(initialActive)
         private set
 
     fun activate() {
@@ -21,7 +22,15 @@ internal class CameraNavigator {
 
 @Composable
 internal fun rememberCameraNavigator(): CameraNavigator {
-    return remember {
-        CameraNavigator()
+    return rememberSaveable(
+        saver =
+            Saver(
+                save = { it.isActive },
+                restore = {
+                    CameraNavigator(it)
+                },
+            ),
+    ) {
+        CameraNavigator(false)
     }
 }

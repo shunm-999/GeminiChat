@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shunm.common_compose.theme.GeminiChatTheme
 import com.shunm.view.camera.camerax.CameraProvider
 import com.shunm.view.camera.camerax.rememberCameraProvider
@@ -32,15 +34,27 @@ import com.shunm.view.camera.component.CameraController
 import com.shunm.view.camera.component.CloseButton
 import com.shunm.view.camera.util.LocalCameraNavigator
 import com.shunm.view.camera.util.rememberCameraNavigator
+import java.util.concurrent.Executors
 import kotlin.math.roundToInt
 
 @Composable
 internal fun CameraContent(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     val density = LocalDensity.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val configuration = LocalConfiguration.current
     val cameraManager = LocalCameraNavigator.current
 
     val cameraProvider = rememberCameraProvider()
+    val cameraExecutor =
+        remember {
+            Executors.newSingleThreadExecutor()
+        }
+    DisposableEffect(cameraExecutor) {
+        onDispose {
+            cameraExecutor.shutdown()
+        }
+    }
 
     val previewSize =
         remember(density, configuration) {
@@ -76,6 +90,13 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
                             )
                     }
                 },
+                update = {
+                    cameraProvider.bindCameraToPreview(
+                        context = context,
+                        lifecycleOwner = lifecycleOwner,
+                        previewView = it,
+                    )
+                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             CameraController(
@@ -103,16 +124,16 @@ private fun calculatePreviewSize(windowSize: IntSize): IntSize {
     val windowWidth = windowSize.width
     val windowHeight = windowSize.height
 
-    val aspectRatio = 2f / 3f
+    val aspectRatio = 3f / 4f
 
     val newWidth: Int
     val newHeight: Int
 
     if (windowWidth < windowHeight) {
         newWidth = windowWidth
-        newHeight = (windowHeight * aspectRatio).roundToInt()
+        newHeight = (windowWidth * (1f / aspectRatio)).roundToInt()
     } else {
-        newWidth = (windowWidth * aspectRatio).roundToInt()
+        newWidth = (windowHeight * (1f / aspectRatio)).roundToInt()
         newHeight = windowHeight
     }
 

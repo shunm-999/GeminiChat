@@ -2,6 +2,7 @@ package com.shunm.view.camera.util
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Result
 
@@ -27,9 +28,11 @@ private data class CameraManagerImpl(
 @Composable
 fun rememberCameraManager(): CameraManager {
     val cameraManager = LocalCameraNavigator.current
-    return CameraManagerImpl(
-        cameraNavigator = cameraManager,
-    )
+    return remember(cameraManager) {
+        CameraManagerImpl(
+            cameraNavigator = cameraManager,
+        )
+    }
 }
 
 // DisplayManager
