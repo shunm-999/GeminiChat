@@ -34,7 +34,7 @@ private fun OuterCircle(
     Box(
         modifier =
             modifier
-                .size(56.dp)
+                .size(72.dp)
                 .clickable { onClick() }
                 .clip(CircleShape)
                 .background(Color.Black)
@@ -50,7 +50,7 @@ private fun InnerCircle(modifier: Modifier = Modifier) {
     Box(
         modifier =
             modifier
-                .size(36.dp)
+                .size(48.dp)
                 .clip(CircleShape)
                 .background(Color.White),
     ) {
