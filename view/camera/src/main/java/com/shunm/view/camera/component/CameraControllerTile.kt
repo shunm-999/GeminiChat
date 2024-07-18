@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.shunm.common_compose.theme.GeminiChatTheme
 
 @Composable
-internal fun CameraController(
+internal fun CameraControllerTile(
     switchableCamera: Boolean,
     onTakePicture: () -> Unit,
     onSwitchCamera: () -> Unit,
@@ -58,7 +58,7 @@ private fun RowScope.Padding(
 @Composable
 private fun CameraControllerPreview() {
     GeminiChatTheme {
-        CameraController(
+        CameraControllerTile(
             switchableCamera = true,
             onTakePicture = {},
             onSwitchCamera = {},

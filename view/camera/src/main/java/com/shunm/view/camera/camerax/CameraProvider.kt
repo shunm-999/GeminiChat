@@ -14,6 +14,7 @@ import androidx.camera.view.PreviewView
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.LifecycleOwner
+import com.shunm.view.camera.data.LensFacing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -43,10 +44,11 @@ internal class CameraProvider {
         context: Context,
         lifecycleOwner: LifecycleOwner,
         previewView: PreviewView,
-    ) {
+        requireLensFacing: LensFacing = LensFacing.Back,
+    ): CameraController {
         val provider = getProvider(context)
 
-        val cameraSelector = buildCameraSelector(context)
+        val cameraSelector = buildCameraSelector(context, requireLensFacing)
         val preview = buildPreview(previewView)
         val imageCapture = buildImageCapture(previewView)
         val imageAnalysis = buildImageAnalysis(previewView)
@@ -61,6 +63,10 @@ internal class CameraProvider {
             imageAnalysis,
         )
         preview.setSurfaceProvider(previewView.surfaceProvider)
+
+        return CameraController(
+            imageCapture = imageCapture,
+        )
     }
 
     private fun getProvider(context: Context): ProcessCameraProvider {
@@ -74,11 +80,14 @@ internal class CameraProvider {
         }
     }
 
-    private fun buildCameraSelector(context: Context): CameraSelector {
+    private fun buildCameraSelector(
+        context: Context,
+        requireLensFacing: LensFacing,
+    ): CameraSelector {
         val lensFacing =
             when {
-                hasBackCamera(context) -> CameraSelector.LENS_FACING_BACK
-                hasFrontCamera(context) -> CameraSelector.LENS_FACING_FRONT
+                requireLensFacing is LensFacing.Front && hasFrontCamera(context) -> CameraSelector.LENS_FACING_FRONT
+                requireLensFacing is LensFacing.Back && hasBackCamera(context) -> CameraSelector.LENS_FACING_BACK
                 else -> throw IllegalStateException("Back and front camera are unavailable")
             }
         return CameraSelector.Builder().requireLensFacing(lensFacing).build()
