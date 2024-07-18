@@ -2,7 +2,7 @@ package com.shunm.view.camera.util
 
 import androidx.compose.runtime.staticCompositionLocalOf
 
-internal val LocalCameraNavigator =
-    staticCompositionLocalOf<CameraNavigator> {
+val LocalCameraManager =
+    staticCompositionLocalOf<CameraManager> {
         error("No CameraManager provided")
     }

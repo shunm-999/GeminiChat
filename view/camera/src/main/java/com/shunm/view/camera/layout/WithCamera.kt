@@ -7,20 +7,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import com.shunm.view.camera.screen.CameraScreen
-import com.shunm.view.camera.util.LocalCameraNavigator
+import com.shunm.view.camera.util.LocalCameraManager
+import com.shunm.view.camera.util.rememberCameraManager
 import com.shunm.view.camera.util.rememberCameraNavigator
 
 @Composable
 fun WithCamera(content: @Composable () -> Unit) {
-    val cameraManager = rememberCameraNavigator()
-    CompositionLocalProvider(LocalCameraNavigator provides cameraManager) {
+    val cameraNavigator = rememberCameraNavigator()
+    val cameraManager = rememberCameraManager(cameraNavigator)
+    CompositionLocalProvider(LocalCameraManager provides cameraManager) {
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
             content()
-            if (cameraManager.isActive) {
+            if (cameraNavigator.isActive) {
                 BackHandler {
-                    cameraManager.deactivate()
+                    cameraNavigator.deactivate()
                 }
                 CameraScreen(
                     modifier = Modifier.fillMaxSize(),

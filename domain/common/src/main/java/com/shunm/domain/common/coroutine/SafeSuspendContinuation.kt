@@ -6,6 +6,8 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 sealed interface SafeSuspendContinuation<T, E> {
     fun resumeWith(result: Result<T, E>)
+
+    fun cancel()
 }
 
 private data class SafeSuspendContinuationImpl<T, E>(
@@ -17,6 +19,12 @@ private data class SafeSuspendContinuationImpl<T, E>(
         callback()
         if (continuation.isActive && canResume()) {
             continuation.resumeWith(kotlin.Result.success(result))
+        }
+    }
+
+    override fun cancel() {
+        if (continuation.isActive) {
+            continuation.cancel()
         }
     }
 }

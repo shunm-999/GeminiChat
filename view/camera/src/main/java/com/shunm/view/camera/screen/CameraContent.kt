@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shunm.common_compose.theme.GeminiChatTheme
 import com.shunm.domain.common.model.Err
-import com.shunm.domain.common.model.Ok
+import com.shunm.domain.common.model.map_err
 import com.shunm.view.camera.camerax.CameraController
 import com.shunm.view.camera.camerax.CameraProvider
 import com.shunm.view.camera.camerax.rememberCameraProvider
@@ -37,7 +37,9 @@ import com.shunm.view.camera.component.CameraControllerTile
 import com.shunm.view.camera.component.CameraPreview
 import com.shunm.view.camera.component.CloseButton
 import com.shunm.view.camera.data.LensFacing
-import com.shunm.view.camera.util.LocalCameraNavigator
+import com.shunm.view.camera.util.CameraManagerError
+import com.shunm.view.camera.util.LocalCameraManager
+import com.shunm.view.camera.util.rememberCameraManager
 import com.shunm.view.camera.util.rememberCameraNavigator
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
@@ -48,9 +50,9 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
 
-    val cameraNavigator = LocalCameraNavigator.current
-    val cameraProvider = rememberCameraProvider()
+    val cameraManager = LocalCameraManager.current
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
+    val cameraProvider = rememberCameraProvider()
     var cameraController: CameraController? by remember {
         mutableStateOf(null)
     }
@@ -90,19 +92,16 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
                 onTakePicture = {
                     coroutineScope.launch {
                         cameraController?.let { controller ->
-                            when (
-                                val result =
-                                    controller.takePicture(
-                                        context = context,
-                                        executor = cameraExecutor,
-                                    )
-                            ) {
-                                is Err -> {
-                                }
-
-                                is Ok -> {
-                                }
-                            }
+                            val result =
+                                controller.takePicture(
+                                    context = context,
+                                    executor = cameraExecutor,
+                                )
+                            cameraManager.setResult(
+                                result.map_err {
+                                    CameraManagerError.NoMedia
+                                },
+                            )
                         }
                     }
                 },
@@ -118,7 +117,9 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
                     .align(Alignment.TopStart),
         ) {
             CloseButton {
-                cameraNavigator.deactivate()
+                coroutineScope.launch {
+                    cameraManager.setResult(Err(CameraManagerError.NoMedia))
+                }
             }
         }
     }
@@ -157,9 +158,10 @@ private fun switchableCamera(cameraProvider: CameraProvider): State<Boolean> {
 @Composable
 private fun ContentPreview() {
     GeminiChatTheme {
-        val cameraManager = rememberCameraNavigator()
+        val cameraNavigator = rememberCameraNavigator()
+        val cameraManager = rememberCameraManager(cameraNavigator)
         CompositionLocalProvider(
-            LocalCameraNavigator provides cameraManager,
+            LocalCameraManager provides cameraManager,
         ) {
             CameraContent()
         }
