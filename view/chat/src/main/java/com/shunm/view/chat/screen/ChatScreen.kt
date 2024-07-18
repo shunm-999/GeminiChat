@@ -29,6 +29,7 @@ import com.shunm.common_compose.util.rememberPhotoPicker
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
+import com.shunm.view.camera.util.LocalCameraManager
 import com.shunm.view.chat.R
 import com.shunm.view.chat.components.ChatInputField
 import com.shunm.view.chat.components.MessageList
@@ -187,6 +188,7 @@ private fun ChatInputScope.ChatBottomBar() {
     val coroutineScope = rememberCoroutineScope()
     val photoPicker = rememberPhotoPicker()
     val documentMediaSelector = rememberDocumentMediaSelector()
+    val cameraManager = LocalCameraManager.current
 
     ChatInputField(
         modifier = Modifier.imePadding(),
@@ -220,6 +222,18 @@ private fun ChatInputScope.ChatBottomBar() {
         onClickFolder = {
             coroutineScope.launch {
                 when (val result = documentMediaSelector.selectMedia()) {
+                    is Err -> {
+                    }
+
+                    is Ok -> {
+                        imageList = imageList + result.value
+                    }
+                }
+            }
+        },
+        onClickCamera = {
+            coroutineScope.launch {
+                when (val result = cameraManager.launchCamera()) {
                     is Err -> {
                     }
 

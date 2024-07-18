@@ -48,6 +48,7 @@ composeCompiler {
 dependencies {
     implementation(project(":view:common-compose"))
     implementation(project(":view:chat"))
+    implementation(project(":view:camera"))
     implementation(project(":domain:chat"))
     implementation(project(":domain:common"))
     implementation(project(":infra:chat"))

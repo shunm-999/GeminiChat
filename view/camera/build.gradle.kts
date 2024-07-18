@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.geminiChat.android.feature)
-    alias(libs.plugins.geminiChat.android.screenshot.test)
+    alias(libs.plugins.geminiChat.android.library)
+    alias(libs.plugins.geminiChat.android.library.compose)
 }
 
 android {
-    namespace = "com.shunm.view.chat"
+    namespace = "com.shunm.view.camera"
 }
 
 composeCompiler {
@@ -12,7 +12,7 @@ composeCompiler {
 }
 
 dependencies {
-    implementation(project(":view:camera"))
+    implementation(project(":view:common-compose"))
     implementation(project(":domain:common"))
     implementation(project(":domain:chat"))
 
@@ -24,4 +24,6 @@ dependencies {
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
+
+    implementation(libs.bundles.androidx.camerax)
 }

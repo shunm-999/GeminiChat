@@ -29,8 +29,9 @@ androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
 androidxTracing = "1.3.0-alpha02"
 androidxUiAutomator = "2.2.0"
-androidxWindowManager = "1.3.0-alpha03"
+androidxWindowManager = "1.3.0"
 androidxWork = "2.9.0"
+androidxCameraX = "1.1.0-beta01"
 coil = "2.6.0"
 dependencyGuard = "0.5.0"
 firebaseBom = "32.4.0"
@@ -103,6 +104,12 @@ androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", v
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
+
+androidx-camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "androidxCameraX" }
+androidx-camerax-camear2-extention = { group = "androidx.camera", name = "camera-camera2", version.ref = "androidxCameraX" }
+androidx-camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "androidxCameraX" }
+androidx-camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "androidxCameraX" }
+
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
@@ -162,6 +169,14 @@ room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", vers
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[bundles]
+androidx-camerax = [
+  "androidx-camerax-core",
+  "androidx-camerax-camear2-extention",
+  "androidx-camerax-lifecycle",
+  "androidx-camerax-view"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

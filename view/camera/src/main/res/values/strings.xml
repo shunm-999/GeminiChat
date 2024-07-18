@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="view_camera_you_should_allow_permission">権限を許可してください</string>
+</resources>
