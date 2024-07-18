@@ -57,26 +57,3 @@ internal fun rememberCameraManager(cameraNavigator: CameraNavigator): CameraMana
         )
     }
 }
-
-// DisplayManager
-// DisplayManager.DisplayListener register / unregister
-// CameraExecutor
-// WindowManager / getCurrentWindowMetrics().bounds
-
-// updateCameraUi
-// - takePicture
-// - cameraSwitch
-// setUpCamera
-// - cameraProvider
-// - updateCameraSwitchButton
-// - bindCameraUseCases
-// updateCameraSwitchButton
-// bindCameraUseCases
-// - cameraProvider
-// - cameraSelector
-// - Preview
-// - ImageCapture
-// - ImageAnalysis
-// - CameraProvider.unbindAll
-// - CameraProvider.bindToLifecycle
-// - Preview.setSurfaceProvider
