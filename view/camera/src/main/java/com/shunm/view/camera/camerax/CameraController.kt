@@ -3,7 +3,6 @@ package com.shunm.view.camera.camerax
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -35,9 +34,7 @@ internal class CameraController(
             ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, name)
                 put(MediaStore.MediaColumns.MIME_TYPE, PHOTO_TYPE)
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                    put(MediaStore.Images.Media.RELATIVE_PATH, DESTINATION_PATH)
-                }
+                put(MediaStore.Images.Media.RELATIVE_PATH, DESTINATION_PATH)
             }
         val outputOptions =
             ImageCapture.OutputFileOptions

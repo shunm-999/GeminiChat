@@ -15,20 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.LifecycleOwner
 import com.shunm.view.camera.data.LensFacing
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 internal class CameraProvider {
-    data class CameraProviderMetrics(
+    data class CameraPreviewConfig(
         @AspectRatio.Ratio val aspectRatio: Int,
         @ImageOutputConfig.RotationValue val rotation: Int,
     )
-
-    private val mutex = Mutex()
-
-    private var provider: ProcessCameraProvider? = null
 
     fun hasBackCamera(context: Context): Boolean {
         val provider = getProvider(context)
@@ -70,14 +62,7 @@ internal class CameraProvider {
     }
 
     private fun getProvider(context: Context): ProcessCameraProvider {
-        return runBlocking(Dispatchers.IO) {
-            mutex.withLock {
-                provider ?: ProcessCameraProvider.getInstance(context).get().let {
-                    provider = it
-                    it
-                }
-            }
-        }
+        return ProcessCameraProvider.getInstance(context).get()
     }
 
     private fun buildCameraSelector(
@@ -94,7 +79,7 @@ internal class CameraProvider {
     }
 
     private fun buildPreview(previewView: View): Preview {
-        val (screenAspectRatio, rotation) = getCameraProviderMetrics(previewView)
+        val (screenAspectRatio, rotation) = getCameraProviderConfig(previewView)
 
         return Preview.Builder()
             .setTargetAspectRatio(screenAspectRatio)
@@ -103,7 +88,7 @@ internal class CameraProvider {
     }
 
     private fun buildImageCapture(previewView: View): ImageCapture {
-        val (screenAspectRatio, rotation) = getCameraProviderMetrics(previewView)
+        val (screenAspectRatio, rotation) = getCameraProviderConfig(previewView)
         return ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .setTargetAspectRatio(screenAspectRatio)
@@ -112,16 +97,16 @@ internal class CameraProvider {
     }
 
     private fun buildImageAnalysis(previewView: View): ImageAnalysis {
-        val (screenAspectRatio, rotation) = getCameraProviderMetrics(previewView)
+        val (screenAspectRatio, rotation) = getCameraProviderConfig(previewView)
         return ImageAnalysis.Builder()
             .setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(rotation)
             .build()
     }
 
-    private fun getCameraProviderMetrics(previewView: View): CameraProviderMetrics {
+    private fun getCameraProviderConfig(previewView: View): CameraPreviewConfig {
         val rotation = previewView.context.display?.rotation ?: Surface.ROTATION_0
-        return CameraProviderMetrics(
+        return CameraPreviewConfig(
             aspectRatio = AspectRatio.RATIO_4_3,
             rotation = rotation,
         )
