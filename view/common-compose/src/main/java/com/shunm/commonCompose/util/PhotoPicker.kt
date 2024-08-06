@@ -1,4 +1,4 @@
-package com.shunm.common_compose.util
+package com.shunm.commonCompose.util
 
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher

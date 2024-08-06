@@ -1,4 +1,4 @@
-package com.shunm.common_compose.theme
+package com.shunm.commonCompose.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

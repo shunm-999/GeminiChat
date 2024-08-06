@@ -21,11 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.shunm.common_compose.layouts.GeminiScaffold
-import com.shunm.common_compose.navigation.NavigateRoute
-import com.shunm.common_compose.theme.GeminiChatTheme
-import com.shunm.common_compose.util.rememberDocumentMediaSelector
-import com.shunm.common_compose.util.rememberPhotoPicker
+import com.shunm.commonCompose.layouts.GeminiScaffold
+import com.shunm.commonCompose.navigation.NavigateRoute
+import com.shunm.commonCompose.theme.GeminiChatTheme
+import com.shunm.commonCompose.util.rememberDocumentMediaSelector
+import com.shunm.commonCompose.util.rememberPhotoPicker
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok

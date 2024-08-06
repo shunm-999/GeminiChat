@@ -30,8 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.shunm.common_compose.components.ImageFrame
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.components.ImageFrame
+import com.shunm.commonCompose.theme.GeminiChatTheme
 import com.shunm.domain.chat.model.Image
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.MessageId
@@ -93,17 +93,17 @@ private fun MessageTileFrame(
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier =
-                        Modifier.onGloballyPositioned {
-                            with(density) {
-                                iconWidth = it.size.width.toDp()
-                            }
-                        },
+                    Modifier.onGloballyPositioned {
+                        with(density) {
+                            iconWidth = it.size.width.toDp()
+                        }
+                    },
                 ) {
                     icon()
                 }
@@ -167,10 +167,10 @@ private fun SenderName(
     Text(
         modifier = modifier,
         text =
-            when (sender) {
-                is Message.Sender.User -> sender.user.name
-                is Message.Sender.Model -> stringResource(id = R.string.view_chat_gemini_model_name)
-            },
+        when (sender) {
+            is Message.Sender.User -> sender.user.name
+            is Message.Sender.Model -> stringResource(id = R.string.view_chat_gemini_model_name)
+        },
         style = style,
     )
 }
@@ -218,18 +218,18 @@ private fun MessageTilePreview() {
     GeminiChatTheme {
         MessageTile(
             message =
-                Message(
-                    id = MessageId(1),
-                    sender =
-                        Message.Sender.User(
-                            User(
-                                name = "User",
-                            ),
-                        ),
-                    text = "Hello, World!",
-                    imageList = emptyList(),
-                    createAt = Instant.DISTANT_PAST,
+            Message(
+                id = MessageId(1),
+                sender =
+                Message.Sender.User(
+                    User(
+                        name = "User",
+                    ),
                 ),
+                text = "Hello, World!",
+                imageList = emptyList(),
+                createAt = Instant.DISTANT_PAST,
+            ),
         )
     }
 }
@@ -241,11 +241,11 @@ private fun UserIconPreview() {
         UserIcon(
             modifier = Modifier.size(40.dp),
             sender =
-                Message.Sender.User(
-                    User(
-                        name = "User",
-                    ),
+            Message.Sender.User(
+                User(
+                    name = "User",
                 ),
+            ),
         )
     }
 }

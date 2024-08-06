@@ -24,28 +24,26 @@ sealed interface CameraManager {
 private data class CameraManagerImpl(
     private val cameraNavigator: CameraNavigator,
 ) : CameraManager {
-    private val mutex = Mutex()
+    private val activateMutex = Mutex()
+    private val deactivateMutex = Mutex()
 
     private var continuation: SafeSuspendContinuation<Uri, CameraManagerError>? = null
 
     override suspend fun launchCamera(): CameraManagerResult {
-        cameraNavigator.activate()
-        return safeSuspendCoroutine { continuation ->
-            if (mutex.tryLock()) {
+        return activateMutex.withLock {
+            cameraNavigator.activate()
+            safeSuspendCoroutine { continuation ->
                 this.continuation = continuation
-                mutex.unlock()
-            } else {
-                continuation.cancel()
             }
         }
     }
 
     override suspend fun setResult(result: CameraManagerResult) {
-        mutex.withLock {
+        deactivateMutex.withLock {
             continuation?.resumeWith(result)
             continuation = null
+            cameraNavigator.deactivate()
         }
-        cameraNavigator.deactivate()
     }
 }
 

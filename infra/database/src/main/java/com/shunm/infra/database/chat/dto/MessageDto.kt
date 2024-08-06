@@ -1,7 +1,7 @@
 package com.shunm.infra.database.chat.dto
 
 import android.net.Uri
-import com.shunm.domain.chat.input_data.MessageCreation
+import com.shunm.domain.chat.inputData.MessageCreation
 import com.shunm.domain.chat.model.Image
 import com.shunm.domain.chat.model.ImageId
 import com.shunm.domain.chat.model.Message
@@ -17,10 +17,10 @@ object MessageDto {
             id = 0,
             threadId = threadId.value,
             sender =
-                when (this.sender) {
-                    is Message.Sender.User -> MessageEntity.SenderType.USER
-                    is Message.Sender.Model -> MessageEntity.SenderType.MODEL
-                },
+            when (this.sender) {
+                is Message.Sender.User -> MessageEntity.SenderType.USER
+                is Message.Sender.Model -> MessageEntity.SenderType.MODEL
+            },
             text = this.text,
             createAt = this.createAt.toEpochMilliseconds(),
         )
@@ -31,10 +31,10 @@ object MessageDto {
             id = this.id.value,
             threadId = threadId,
             sender =
-                when (this.sender) {
-                    is Message.Sender.User -> MessageEntity.SenderType.USER
-                    is Message.Sender.Model -> MessageEntity.SenderType.MODEL
-                },
+            when (this.sender) {
+                is Message.Sender.User -> MessageEntity.SenderType.USER
+                is Message.Sender.Model -> MessageEntity.SenderType.MODEL
+            },
             text = this.text,
             createAt = this.createAt.toEpochMilliseconds(),
         )
@@ -46,14 +46,14 @@ object MessageDto {
         return Message(
             id = MessageId(message.id),
             sender =
-                when (message.sender) {
-                    MessageEntity.SenderType.USER ->
-                        Message.Sender.User(
-                            com.shunm.domain.chat.model.User("User"),
-                        )
+            when (message.sender) {
+                MessageEntity.SenderType.USER ->
+                    Message.Sender.User(
+                        com.shunm.domain.chat.model.User("User"),
+                    )
 
-                    MessageEntity.SenderType.MODEL -> Message.Sender.Model
-                },
+                MessageEntity.SenderType.MODEL -> Message.Sender.Model
+            },
             text = message.text,
             imageList = imageList,
             createAt = Instant.fromEpochMilliseconds(message.createAt),

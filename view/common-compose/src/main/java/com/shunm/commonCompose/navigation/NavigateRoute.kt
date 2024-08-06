@@ -1,4 +1,4 @@
-package com.shunm.common_compose.navigation
+package com.shunm.commonCompose.navigation
 
 interface NavigateRoute
 

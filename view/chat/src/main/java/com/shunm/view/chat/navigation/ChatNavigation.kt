@@ -6,9 +6,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.shunm.common_compose.navigation.NavGraph
-import com.shunm.common_compose.navigation.NavigateRoute
-import com.shunm.common_compose.navigation.hiltNavGraphViewModel
+import com.shunm.commonCompose.navigation.NavGraph
+import com.shunm.commonCompose.navigation.NavigateRoute
+import com.shunm.commonCompose.navigation.hiltNavGraphViewModel
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.screen.ChatScreen
 import com.shunm.view.chat.viewmodel.ChatViewModelFactory
@@ -43,11 +43,11 @@ fun NavGraphBuilder.chatNavGraph(navController: NavController) {
                 )
             ChatScreen(
                 viewModel =
-                    hiltViewModel(
-                        creationCallback = { factory: ChatViewModelFactory ->
-                            factory.create(ThreadId(chatRoute.threadId))
-                        },
-                    ),
+                hiltViewModel(
+                    creationCallback = { factory: ChatViewModelFactory ->
+                        factory.create(ThreadId(chatRoute.threadId))
+                    },
+                ),
                 drawerUiStateHolder = drawerViewModel,
                 navigate = { route ->
                     when (route) {

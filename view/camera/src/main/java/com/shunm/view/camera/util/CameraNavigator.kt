@@ -24,12 +24,12 @@ internal class CameraNavigator(initialActive: Boolean) {
 internal fun rememberCameraNavigator(): CameraNavigator {
     return rememberSaveable(
         saver =
-            Saver(
-                save = { it.isActive },
-                restore = {
-                    CameraNavigator(it)
-                },
-            ),
+        Saver(
+            save = { it.isActive },
+            restore = {
+                CameraNavigator(it)
+            },
+        ),
     ) {
         CameraNavigator(false)
     }

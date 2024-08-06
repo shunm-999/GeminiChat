@@ -1,6 +1,6 @@
 package com.shunm.infra.database.chat.dto
 
-import com.shunm.domain.chat.input_data.MessageCreation
+import com.shunm.domain.chat.inputData.MessageCreation
 import com.shunm.domain.chat.model.Image
 import com.shunm.domain.chat.model.Message
 import com.shunm.infra.database.chat.entity.ImageEntity

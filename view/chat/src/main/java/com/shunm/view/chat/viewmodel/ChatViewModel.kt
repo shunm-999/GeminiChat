@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shunm.domain.chat.input_data.MessageCreation
-import com.shunm.domain.chat.input_data.ThreadCreation
+import com.shunm.domain.chat.inputData.MessageCreation
+import com.shunm.domain.chat.inputData.ThreadCreation
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.usecase.CreateMessageUseCase
@@ -28,98 +28,98 @@ import kotlinx.datetime.Clock
 
 @HiltViewModel(assistedFactory = ChatViewModelFactory::class)
 internal class ChatViewModel
-    @AssistedInject
-    constructor(
-        @Assisted private val threadId: ThreadId,
-        private val getThreadDetailUseCase: GetThreadDetailUseCase,
-        private val createThreadUseCase: CreateThreadUseCase,
-        private val createMessageUseCase: CreateMessageUseCase,
-    ) : ViewModel(), ChatUiStateHolder {
-        override var uiState: ChatUiState by mutableStateOf(ChatUiState.Loading)
-            private set
-        override var inputUiState: ChatInputUiState by mutableStateOf(ChatInputUiState.Empty)
-            private set
+@AssistedInject
+constructor(
+    @Assisted private val threadId: ThreadId,
+    private val getThreadDetailUseCase: GetThreadDetailUseCase,
+    private val createThreadUseCase: CreateThreadUseCase,
+    private val createMessageUseCase: CreateMessageUseCase,
+) : ViewModel(), ChatUiStateHolder {
+    override var uiState: ChatUiState by mutableStateOf(ChatUiState.Loading)
+        private set
+    override var inputUiState: ChatInputUiState by mutableStateOf(ChatInputUiState.Empty)
+        private set
 
-        init {
-            loadThread(threadId)
-        }
+    init {
+        loadThread(threadId)
+    }
 
-        private fun loadThread(threadId: ThreadId) {
-            if (threadId.value == -1L) {
-                uiState = ChatUiState.Reedy.Initial
-            } else {
-                viewModelScope.launch {
-                    getThreadDetailUseCase(threadId).collectLatest {
-                        uiState =
-                            when (it) {
-                                is Ok -> {
-                                    ChatUiState.Reedy.Content(
-                                        threadDetail = it.value,
-                                    )
-                                }
-
-                                is Err -> ChatUiState.Error
+    private fun loadThread(threadId: ThreadId) {
+        if (threadId.value == -1L) {
+            uiState = ChatUiState.Reedy.Initial
+        } else {
+            viewModelScope.launch {
+                getThreadDetailUseCase(threadId).collectLatest {
+                    uiState =
+                        when (it) {
+                            is Ok -> {
+                                ChatUiState.Reedy.Content(
+                                    threadDetail = it.value,
+                                )
                             }
-                    }
+
+                            is Err -> ChatUiState.Error
+                        }
                 }
             }
         }
+    }
 
-        override fun update(updater: ChatInputUiState.() -> ChatInputUiState) {
-            inputUiState = updater(inputUiState)
-        }
+    override fun update(updater: ChatInputUiState.() -> ChatInputUiState) {
+        inputUiState = updater(inputUiState)
+    }
 
-        override fun submit() {
-            val currentUiState = (uiState as? ChatUiState.Reedy) ?: return
-            viewModelScope.launch {
-                val threadId =
-                    when (currentUiState) {
-                        ChatUiState.Reedy.Initial -> {
-                            val datetimeString = Clock.System.now().format("yyyy-MM-dd")
+    override fun submit() {
+        val currentUiState = (uiState as? ChatUiState.Reedy) ?: return
+        viewModelScope.launch {
+            val threadId =
+                when (currentUiState) {
+                    ChatUiState.Reedy.Initial -> {
+                        val datetimeString = Clock.System.now().format("yyyy-MM-dd")
 
-                            val result =
-                                createThreadUseCase(
-                                    ThreadCreation(
-                                        title = "Chat $datetimeString",
-                                        createAt = Clock.System.now(),
-                                    ),
-                                )
-                            when (result) {
-                                is Ok -> {
-                                    loadThread(result.value)
-                                    result.value
-                                }
+                        val result =
+                            createThreadUseCase(
+                                ThreadCreation(
+                                    title = "Chat $datetimeString",
+                                    createAt = Clock.System.now(),
+                                ),
+                            )
+                        when (result) {
+                            is Ok -> {
+                                loadThread(result.value)
+                                result.value
+                            }
 
-                                is Err -> {
-                                    uiState = ChatUiState.Error
-                                    return@launch
-                                }
+                            is Err -> {
+                                uiState = ChatUiState.Error
+                                return@launch
                             }
                         }
-                        is ChatUiState.Reedy.Content -> {
-                            currentUiState.threadDetail.id
-                        }
                     }
-                val messageCreation =
-                    MessageCreation(
-                        threadId = threadId,
-                        sender =
-                            Message.Sender.User(
-                                user =
-                                    com.shunm.domain.chat.model.User(
-                                        name = "User",
-                                    ),
-                            ),
-                        text = inputUiState.text,
-                        imageList = inputUiState.imageList,
-                        createAt = Clock.System.now(),
-                    )
-                createMessageUseCase(messageCreation)
+                    is ChatUiState.Reedy.Content -> {
+                        currentUiState.threadDetail.id
+                    }
+                }
+            val messageCreation =
+                MessageCreation(
+                    threadId = threadId,
+                    sender =
+                    Message.Sender.User(
+                        user =
+                        com.shunm.domain.chat.model.User(
+                            name = "User",
+                        ),
+                    ),
+                    text = inputUiState.text,
+                    imageList = inputUiState.imageList,
+                    createAt = Clock.System.now(),
+                )
+            createMessageUseCase(messageCreation)
 
-                inputUiState = ChatInputUiState.Empty
-            }
+            inputUiState = ChatInputUiState.Empty
         }
     }
+}
 
 @AssistedFactory
 internal interface ChatViewModelFactory {

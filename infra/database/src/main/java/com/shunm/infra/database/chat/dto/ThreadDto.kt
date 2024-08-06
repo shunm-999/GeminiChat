@@ -1,6 +1,6 @@
 package com.shunm.infra.database.chat.dto
 
-import com.shunm.domain.chat.input_data.ThreadCreation
+import com.shunm.domain.chat.inputData.ThreadCreation
 import com.shunm.domain.chat.model.ThreadDetail
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.chat.model.ThreadSummary

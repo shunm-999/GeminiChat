@@ -37,10 +37,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.shunm.common_compose.components.FilledInputField
-import com.shunm.common_compose.components.PlaceHolder
-import com.shunm.common_compose.components.VoiceRecognitionIcon
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.components.FilledInputField
+import com.shunm.commonCompose.components.PlaceHolder
+import com.shunm.commonCompose.components.VoiceRecognitionIcon
+import com.shunm.commonCompose.theme.GeminiChatTheme
 import com.shunm.view.chat.R
 
 @Composable
@@ -60,12 +60,12 @@ internal fun ChatInputField(
     val keyboardController = LocalSoftwareKeyboardController.current
     Row(
         modifier =
-            modifier
-                .padding(
-                    vertical = 4.dp,
-                    horizontal = 16.dp,
-                )
-                .fillMaxWidth(),
+        modifier
+            .padding(
+                vertical = 4.dp,
+                horizontal = 16.dp,
+            )
+            .fillMaxWidth(),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -88,9 +88,9 @@ internal fun ChatInputField(
         }
         FilledInputField(
             modifier =
-                Modifier
-                    .weight(1f)
-                    .wrapContentHeight(),
+            Modifier
+                .weight(1f)
+                .wrapContentHeight(),
             text = text,
             onTextChange = onTextChange,
             imageList = imageList,
@@ -144,25 +144,25 @@ private fun Options(
     ) {
         Icon(
             modifier =
-                Modifier.clickable {
-                    onClickCamera()
-                },
+            Modifier.clickable {
+                onClickCamera()
+            },
             imageVector = Icons.Outlined.PhotoCamera,
             contentDescription = null,
         )
         Icon(
             modifier =
-                Modifier.clickable {
-                    onClickPhoto()
-                },
+            Modifier.clickable {
+                onClickPhoto()
+            },
             imageVector = Icons.Outlined.Photo,
             contentDescription = null,
         )
         Icon(
             modifier =
-                Modifier.clickable {
-                    onClickFolder()
-                },
+            Modifier.clickable {
+                onClickFolder()
+            },
             imageVector = Icons.Outlined.Folder,
             contentDescription = null,
         )
@@ -184,22 +184,22 @@ private fun SubmitButton(
         enabled = enabled,
         onClick = onClick,
         modifier =
-            Modifier
-                .clip(CircleShape)
-                .background(
-                    color =
-                        MaterialTheme.colorScheme.onSurface.copy(
-                            alpha = alpha,
-                        ),
+        Modifier
+            .clip(CircleShape)
+            .background(
+                color =
+                MaterialTheme.colorScheme.onSurface.copy(
+                    alpha = alpha,
                 ),
+            ),
     ) {
         Icon(
             imageVector = Icons.Default.ArrowUpward,
             contentDescription = null,
             tint =
-                MaterialTheme.colorScheme.surface.copy(
-                    alpha = alpha,
-                ),
+            MaterialTheme.colorScheme.surface.copy(
+                alpha = alpha,
+            ),
         )
     }
 }
@@ -209,11 +209,11 @@ private fun OptionAddButton(onClick: () -> Unit) {
     IconButton(
         onClick = onClick,
         modifier =
-            Modifier
-                .clip(CircleShape)
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                ),
+        Modifier
+            .clip(CircleShape)
+            .background(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+            ),
     ) {
         Icon(
             imageVector = Icons.Default.Add,
