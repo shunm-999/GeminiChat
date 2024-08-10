@@ -11,7 +11,7 @@ import androidx.navigation.toRoute
 
 sealed interface GeminiChatNavGraphBuilder {
     val provider: NavGraphBuilder
-    val navController : NavHostController
+    val navController: NavHostController
 }
 
 fun GeminiChatNavGraphBuilder(
@@ -72,4 +72,3 @@ inline fun <reified T : NavigateRoute> GeminiChatNavGraphBuilder.composable(
         },
     )
 }
-

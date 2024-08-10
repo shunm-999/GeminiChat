@@ -5,7 +5,6 @@ import kotlin.reflect.KClass
 interface NavigateRoute
 
 sealed interface NavigationRouteTemplate {
-
     fun toRoute(): Any
 
     interface WithArgs : NavigationRouteTemplate
@@ -18,4 +17,3 @@ sealed interface NavigationRouteTemplate {
 }
 
 interface NavGraph
-
