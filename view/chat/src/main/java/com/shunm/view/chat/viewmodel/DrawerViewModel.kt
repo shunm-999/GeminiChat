@@ -19,36 +19,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class DrawerViewModel
-    @Inject
-    constructor(
-        private val getThreadListUseCase: GetThreadListUseCase,
-    ) : ViewModel(), DrawerUiStateHolder {
-        private var currentThread: ThreadSummary? by mutableStateOf(null)
-        private var threadList: List<ThreadSummary> by mutableStateOf(emptyList())
+@Inject
+constructor(
+    private val getThreadListUseCase: GetThreadListUseCase,
+) : ViewModel(), DrawerUiStateHolder {
+    private var currentThread: ThreadSummary? by mutableStateOf(null)
+    private var threadList: List<ThreadSummary> by mutableStateOf(emptyList())
 
-        override val uiState: DrawerUiState by derivedStateOf {
-            DrawerUiState(
-                currentThread = currentThread,
-                threadList = threadList,
-            )
-        }
+    override val uiState: DrawerUiState by derivedStateOf {
+        DrawerUiState(
+            currentThread = currentThread,
+            threadList = threadList,
+        )
+    }
 
-        init {
-            viewModelScope.launch {
-                getThreadListUseCase().collectLatest {
-                    when (it) {
-                        is Ok -> {
-                            threadList = it.value
-                        }
+    init {
+        viewModelScope.launch {
+            getThreadListUseCase().collectLatest {
+                when (it) {
+                    is Ok -> {
+                        threadList = it.value
+                    }
 
-                        is Err -> {
-                        }
+                    is Err -> {
                     }
                 }
             }
         }
-
-        override fun selectThread(thread: ThreadSummary) {
-            currentThread = thread
-        }
     }
+
+    override fun selectThread(thread: ThreadSummary) {
+        currentThread = thread
+    }
+}

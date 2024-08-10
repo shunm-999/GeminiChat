@@ -1,4 +1,4 @@
-package com.shunm.common_compose.theme
+package com.shunm.commonCompose.theme
 
 import androidx.compose.ui.graphics.Color
 

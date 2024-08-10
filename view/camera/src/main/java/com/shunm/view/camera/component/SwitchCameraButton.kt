@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 
 @Composable
 internal fun SwitchCameraButton(
@@ -22,9 +22,9 @@ internal fun SwitchCameraButton(
 ) {
     IconButton(
         modifier =
-            modifier
-                .size(56.dp)
-                .border(2.dp, SolidColor(Color.White), CircleShape),
+        modifier
+            .size(56.dp)
+            .border(2.dp, SolidColor(Color.White), CircleShape),
         onClick = onClick,
     ) {
         Icon(

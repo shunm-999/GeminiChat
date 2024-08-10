@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.spotless.gradle)
 }
 
 group = "com.shunm.common_compose.build-logic"

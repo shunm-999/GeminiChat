@@ -1,6 +1,6 @@
 package com.shunm.infra.chat.repository
 
-import com.shunm.domain.chat.input_data.MessageCreation
+import com.shunm.domain.chat.inputData.MessageCreation
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.MessageId
 import com.shunm.domain.chat.repository.MessageRepository
@@ -21,55 +21,55 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MessageRepositoryImpl
-    @Inject
-    constructor(
-        @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-        private val transactionManager: TransactionManager,
-        private val messageDao: MessageDao,
-        private val imageDao: ImageDao,
-    ) : MessageRepository {
-        override suspend fun getMessages(threadId: Long): ExceptionResult<List<Message>> {
-            return withContext(ioDispatcher) {
-                try {
-                    with(MessageDto) {
-                        val messages = messageDao.selectByThreadId(threadId)
-                        Ok(messages.map { it.toModel() })
-                    }
-                } catch (e: Exception) {
-                    Err(e)
-                }
-            }
-        }
-
-        override fun getMessagesFlow(threadId: Long): Flow<ExceptionResult<List<Message>>> {
-            return messageDao.selectByThreadIdFlow(threadId).map { entities ->
+@Inject
+constructor(
+    @Dispatcher(BasicDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    private val transactionManager: TransactionManager,
+    private val messageDao: MessageDao,
+    private val imageDao: ImageDao,
+) : MessageRepository {
+    override suspend fun getMessages(threadId: Long): ExceptionResult<List<Message>> {
+        return withContext(ioDispatcher) {
+            try {
                 with(MessageDto) {
-                    val messages = entities.map { it.toModel() }
-                    Ok(messages)
+                    val messages = messageDao.selectByThreadId(threadId)
+                    Ok(messages.map { it.toModel() })
                 }
-            }
-        }
-
-        override suspend fun createMessage(messageCreation: MessageCreation): ExceptionResult<MessageId> {
-            return withContext(ioDispatcher) {
-                try {
-                    transactionManager.withTransaction {
-                        val messageEntity =
-                            with(MessageDto) {
-                                messageCreation.toEntity()
-                            }
-                        val messageId = messageDao.insert(messageEntity)
-
-                        val imageEntityList =
-                            with(ImageDto) {
-                                messageCreation.toEntityList(messageId)
-                            }
-                        imageDao.insert(imageEntityList)
-                        Ok(MessageId(messageEntity.id))
-                    }
-                } catch (e: Exception) {
-                    Err(e)
-                }
+            } catch (e: Exception) {
+                Err(e)
             }
         }
     }
+
+    override fun getMessagesFlow(threadId: Long): Flow<ExceptionResult<List<Message>>> {
+        return messageDao.selectByThreadIdFlow(threadId).map { entities ->
+            with(MessageDto) {
+                val messages = entities.map { it.toModel() }
+                Ok(messages)
+            }
+        }
+    }
+
+    override suspend fun createMessage(messageCreation: MessageCreation): ExceptionResult<MessageId> {
+        return withContext(ioDispatcher) {
+            try {
+                transactionManager.withTransaction {
+                    val messageEntity =
+                        with(MessageDto) {
+                            messageCreation.toEntity()
+                        }
+                    val messageId = messageDao.insert(messageEntity)
+
+                    val imageEntityList =
+                        with(ImageDto) {
+                            messageCreation.toEntityList(messageId)
+                        }
+                    imageDao.insert(imageEntityList)
+                    Ok(MessageId(messageEntity.id))
+                }
+            } catch (e: Exception) {
+                Err(e)
+            }
+        }
+    }
+}

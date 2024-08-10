@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetMessageListUseCase
-    @Inject
-    constructor(
-        private val messageRepository: MessageRepository,
-    ) {
-        operator fun invoke(threadId: Long): Flow<ExceptionResult<List<Message>>> = messageRepository.getMessagesFlow(threadId)
+@Inject
+constructor(
+    private val messageRepository: MessageRepository,
+) {
+    operator fun invoke(threadId: Long): Flow<ExceptionResult<List<Message>>> = messageRepository.getMessagesFlow(threadId)
 
-        suspend operator fun invoke(
-            @Suppress("UNUSED_PARAMETER")
-            suspended: Suspend,
-            threadId: Long,
-        ): ExceptionResult<List<Message>> = messageRepository.getMessages(threadId)
-    }
+    suspend operator fun invoke(
+        @Suppress("UNUSED_PARAMETER")
+        suspended: Suspend,
+        threadId: Long,
+    ): ExceptionResult<List<Message>> = messageRepository.getMessages(threadId)
+}

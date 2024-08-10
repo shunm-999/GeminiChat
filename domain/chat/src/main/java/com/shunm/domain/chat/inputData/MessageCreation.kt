@@ -1,4 +1,4 @@
-package com.shunm.domain.chat.input_data
+package com.shunm.domain.chat.inputData
 
 import android.net.Uri
 import com.shunm.domain.chat.model.Message

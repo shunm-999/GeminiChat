@@ -2,7 +2,7 @@ package com.shunm.view.chat.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 
 class ChatInputFieldScreenshots {
     @Preview(showBackground = true)

@@ -41,8 +41,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.shunm.common_compose.ext.useIf
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.ext.useIf
+import com.shunm.commonCompose.theme.GeminiChatTheme
 import com.shunm.view.chat.R
 
 internal interface DrawerContentScope {
@@ -110,11 +110,11 @@ internal fun ChatNavigationLayout(
             scope.drawerContent()
             Surface(
                 modifier =
-                    Modifier
-                        .fillMaxHeight()
-                        .padding(
-                            vertical = 8.dp,
-                        ),
+                Modifier
+                    .fillMaxHeight()
+                    .padding(
+                        vertical = 8.dp,
+                    ),
             ) {
                 scope.Compose()
             }
@@ -159,19 +159,19 @@ private fun NavigationRail(
     ) {
         Column(
             modifier =
-                Modifier
-                    .statusBarsPadding()
-                    .navigationBarsPadding()
-                    .fillMaxHeight()
-                    .weight(0.3f),
+            Modifier
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .fillMaxHeight()
+                .weight(0.3f),
         ) {
             drawerContent()
         }
         Column(
             modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .weight(0.7f),
+            Modifier
+                .fillMaxHeight()
+                .weight(0.7f),
         ) {
             content()
         }
@@ -212,17 +212,17 @@ internal fun DrawerContentItemScope.NavigationItem(
         )
     Box(
         modifier =
-            modifier
-                .useIf(isSelected) {
-                    drawBehind {
-                        drawRoundRect(
-                            color = backgroundColor,
-                            cornerRadius = CornerRadius(8.dp.toPx()),
-                        )
-                    }
+        modifier
+            .useIf(isSelected) {
+                drawBehind {
+                    drawRoundRect(
+                        color = backgroundColor,
+                        cornerRadius = CornerRadius(8.dp.toPx()),
+                    )
                 }
-                .padding(vertical = 8.dp, horizontal = 4.dp)
-                .clickable(onClick = onClick),
+            }
+            .padding(vertical = 8.dp, horizontal = 4.dp)
+            .clickable(onClick = onClick),
     ) {
         Text(
             text = text,

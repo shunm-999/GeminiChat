@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.map_err
 import com.shunm.view.camera.camerax.CameraController
@@ -68,11 +68,11 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
 
     Box(
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(
-                    Color.Black,
-                ),
+        modifier
+            .fillMaxSize()
+            .background(
+                Color.Black,
+            ),
     ) {
         Column {
             CameraPreview(
@@ -112,9 +112,9 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
         }
         Box(
             modifier =
-                Modifier
-                    .padding(8.dp)
-                    .align(Alignment.TopStart),
+            Modifier
+                .padding(8.dp)
+                .align(Alignment.TopStart),
         ) {
             CloseButton {
                 coroutineScope.launch {
@@ -129,10 +129,10 @@ internal fun CameraContent(modifier: Modifier = Modifier) {
 private fun rememberLensFacing(initial: LensFacing): MutableState<LensFacing> {
     return rememberSaveable(
         saver =
-            Saver(
-                save = { it.value.toValue() },
-                restore = { mutableStateOf(LensFacing.from(it)) },
-            ),
+        Saver(
+            save = { it.value.toValue() },
+            restore = { mutableStateOf(LensFacing.from(it)) },
+        ),
     ) {
         mutableStateOf(initial)
     }

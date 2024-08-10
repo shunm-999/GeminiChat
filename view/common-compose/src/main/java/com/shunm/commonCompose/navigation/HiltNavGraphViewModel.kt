@@ -1,4 +1,4 @@
-package com.shunm.common_compose.navigation
+package com.shunm.commonCompose.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel

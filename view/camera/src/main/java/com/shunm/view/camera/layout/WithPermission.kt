@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 import com.shunm.view.camera.R
 
 @Composable

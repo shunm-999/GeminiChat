@@ -10,22 +10,22 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 internal class GeminiRepositoryImpl
-    @Inject
-    constructor(
-        @ApplicationContext private val context: Context,
-        private val geminiRemoteDatasource: GeminiRemoteDatasource,
-    ) : GeminiRepository {
-        override suspend fun sendMessage(
-            message: String,
-            imageList: List<Uri>,
-        ): ExceptionResult<String> {
-            val bitmapList =
-                imageList.mapNotNull {
-                    it.getBitmapOrNull(context)
-                }
-            return geminiRemoteDatasource.sendMessage(
-                message = message,
-                imageList = bitmapList,
-            )
-        }
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
+    private val geminiRemoteDatasource: GeminiRemoteDatasource,
+) : GeminiRepository {
+    override suspend fun sendMessage(
+        message: String,
+        imageList: List<Uri>,
+    ): ExceptionResult<String> {
+        val bitmapList =
+            imageList.mapNotNull {
+                it.getBitmapOrNull(context)
+            }
+        return geminiRemoteDatasource.sendMessage(
+            message = message,
+            imageList = bitmapList,
+        )
     }
+}

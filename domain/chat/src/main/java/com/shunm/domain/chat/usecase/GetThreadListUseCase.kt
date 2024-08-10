@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetThreadListUseCase
-    @Inject
-    constructor(
-        private val threadRepository: ThreadRepository,
-    ) {
-        suspend operator fun invoke(
-            @Suppress("UNUSED_PARAMETER")
-            suspended: Suspend,
-        ): ExceptionResult<List<ThreadSummary>> = threadRepository.getThreadList()
+@Inject
+constructor(
+    private val threadRepository: ThreadRepository,
+) {
+    suspend operator fun invoke(
+        @Suppress("UNUSED_PARAMETER")
+        suspended: Suspend,
+    ): ExceptionResult<List<ThreadSummary>> = threadRepository.getThreadList()
 
-        operator fun invoke(): Flow<ExceptionResult<List<ThreadSummary>>> = threadRepository.getThreadListFlow()
-    }
+    operator fun invoke(): Flow<ExceptionResult<List<ThreadSummary>>> = threadRepository.getThreadListFlow()
+}

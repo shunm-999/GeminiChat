@@ -1,4 +1,4 @@
-package com.shunm.common_compose.ext
+package com.shunm.commonCompose.ext
 
 import androidx.compose.ui.Modifier
 

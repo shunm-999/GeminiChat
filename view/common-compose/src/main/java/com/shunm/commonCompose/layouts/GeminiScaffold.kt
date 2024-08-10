@@ -1,4 +1,4 @@
-package com.shunm.common_compose.layouts
+package com.shunm.commonCompose.layouts
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding

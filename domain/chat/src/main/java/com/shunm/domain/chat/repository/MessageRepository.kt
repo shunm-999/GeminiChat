@@ -1,6 +1,6 @@
 package com.shunm.domain.chat.repository
 
-import com.shunm.domain.chat.input_data.MessageCreation
+import com.shunm.domain.chat.inputData.MessageCreation
 import com.shunm.domain.chat.model.Message
 import com.shunm.domain.chat.model.MessageId
 import com.shunm.domain.common.model.ExceptionResult

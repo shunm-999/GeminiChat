@@ -1,4 +1,4 @@
-package com.shunm.common_compose.components
+package com.shunm.commonCompose.components
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 
 object FilledInputFieldScope
 
@@ -58,11 +58,11 @@ fun FilledInputField(
         }
         Column(
             modifier =
-                modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                    ),
+            modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant,
+                ),
         ) {
             if (imageList.isNotEmpty()) {
                 InputImageRow(
@@ -77,13 +77,13 @@ fun FilledInputField(
                 value = text,
                 onValueChange = onTextChange,
                 placeholder =
-                    placeholder?.let {
-                        { it() }
-                    },
+                placeholder?.let {
+                    { it() }
+                },
                 trailingIcon =
-                    trailingIcon?.let {
-                        { it() }
-                    },
+                trailingIcon?.let {
+                    { it() }
+                },
                 interactionSource = interactionSource,
                 shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.transparentColors(),

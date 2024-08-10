@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 
 @Composable
 internal fun TakePictureButton(onClick: () -> Unit) {
@@ -33,12 +33,12 @@ private fun OuterCircle(
 ) {
     Box(
         modifier =
-            modifier
-                .size(72.dp)
-                .clickable { onClick() }
-                .clip(CircleShape)
-                .background(Color.Black)
-                .border(4.dp, SolidColor(Color.White), CircleShape),
+        modifier
+            .size(72.dp)
+            .clickable { onClick() }
+            .clip(CircleShape)
+            .background(Color.Black)
+            .border(4.dp, SolidColor(Color.White), CircleShape),
         contentAlignment = Alignment.Center,
     ) {
         inner()
@@ -49,10 +49,10 @@ private fun OuterCircle(
 private fun InnerCircle(modifier: Modifier = Modifier) {
     Box(
         modifier =
-            modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .background(Color.White),
+        modifier
+            .size(48.dp)
+            .clip(CircleShape)
+            .background(Color.White),
     ) {
     }
 }

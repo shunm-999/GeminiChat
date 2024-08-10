@@ -1,4 +1,4 @@
-package com.shunm.common_compose.components
+package com.shunm.commonCompose.components
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -67,17 +67,17 @@ fun ImageFrame(
 internal fun ImageIconScope.ImageDeleteIcon(onClick: () -> Unit) {
     Icon(
         modifier =
-            Modifier
-                .offset(2.dp, (-2).dp)
-                .size(12.dp)
-                .clip(CircleShape)
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                )
-                .clickable {
-                    onClick()
-                }
-                .align(Alignment.TopEnd),
+        Modifier
+            .offset(2.dp, (-2).dp)
+            .size(12.dp)
+            .clip(CircleShape)
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+            )
+            .clickable {
+                onClick()
+            }
+            .align(Alignment.TopEnd),
         imageVector = Icons.Default.Close,
         contentDescription = null,
     )

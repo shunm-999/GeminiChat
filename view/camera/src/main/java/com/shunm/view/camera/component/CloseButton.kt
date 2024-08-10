@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.shunm.common_compose.theme.GeminiChatTheme
+import com.shunm.commonCompose.theme.GeminiChatTheme
 
 @Composable
 internal fun CloseButton(
@@ -20,9 +20,9 @@ internal fun CloseButton(
 ) {
     IconButton(
         modifier =
-            modifier
-                .clip(CircleShape)
-                .background(Color.Gray),
+        modifier
+            .clip(CircleShape)
+            .background(Color.Gray),
         onClick = onClick,
     ) {
         Icon(
