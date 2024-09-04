@@ -60,7 +60,7 @@ robolectric = "4.11.1"
 room = "2.6.1"
 secrets = "2.0.1"
 
-compose-screenshot-test = "0.0.1-alpha01"
+compose-screenshot-test = "0.0.1-alpha06"
 truth = "1.4.2"
 turbine = "1.1.0"
 kotlinVersion = "1.9.0"
