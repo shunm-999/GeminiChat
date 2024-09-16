@@ -12,7 +12,7 @@ internal fun GeminiChatNavHost(modifier: Modifier = Modifier) {
     GeminiChatNavHost(
         modifier = modifier,
         navController = rememberNavController(),
-        startDestination = ChatNavGraph,
+        startDestination = ChatNavGraph.startDestination,
     ) {
         chatNavGraph()
     }

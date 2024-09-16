@@ -4,16 +4,34 @@ import kotlin.reflect.KClass
 
 interface NavigateRoute
 
-sealed interface NavigationRouteTemplate {
-    fun toRoute(): Any
+interface NavGraph {
+    val startDestination: StartDestination
 
-    interface WithArgs : NavigationRouteTemplate
+    sealed interface StartDestination : NavigateRoute {
+        fun toRoute(): Any
 
-    interface NoArgs : NavigationRouteTemplate {
-        override fun toRoute(): KClass<*> {
-            return this::class
+        interface WithArgs : StartDestination {
+            override fun toRoute(): NavigateRoute
+        }
+
+        interface NoArgs<T : NavigateRoute> : StartDestination {
+            override fun toRoute(): KClass<T>
         }
     }
 }
 
-interface NavGraph
+inline fun startDestinationWithArgs(crossinline toRoute: () -> NavigateRoute): NavGraph.StartDestination.WithArgs {
+    return object : NavGraph.StartDestination.WithArgs {
+        override fun toRoute(): NavigateRoute {
+            return toRoute()
+        }
+    }
+}
+
+inline fun <reified T : NavigateRoute> startDestinationNoArgs(): NavGraph.StartDestination.NoArgs<T> {
+    return object : NavGraph.StartDestination.NoArgs<T> {
+        override fun toRoute(): KClass<T> {
+            return T::class
+        }
+    }
+}

@@ -2,14 +2,13 @@ package com.shunm.view.chat.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.composable
 import com.shunm.commonCompose.navigation.GeminiChatNavGraphBuilder
 import com.shunm.commonCompose.navigation.NavGraph
 import com.shunm.commonCompose.navigation.NavigateRoute
-import com.shunm.commonCompose.navigation.NavigationRouteTemplate
 import com.shunm.commonCompose.navigation.composable
 import com.shunm.commonCompose.navigation.hiltNavGraphViewModel
 import com.shunm.commonCompose.navigation.navigation
+import com.shunm.commonCompose.navigation.startDestinationWithArgs
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.screen.ChatScreen
 import com.shunm.view.chat.viewmodel.ChatViewModelFactory
@@ -17,19 +16,16 @@ import com.shunm.view.chat.viewmodel.DrawerViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ChatNavGraph : NavGraph, NavigationRouteTemplate.NoArgs
+object ChatNavGraph : NavGraph {
+    override val startDestination: NavGraph.StartDestination = startDestinationWithArgs {
+        ChatRoute(threadId = -1)
+    }
+}
 
 @Serializable
 data class ChatRoute internal constructor(
     val threadId: Long,
-) : NavigateRoute {
-
-    companion object : NavigationRouteTemplate.WithArgs {
-        override fun toRoute(): Any {
-            return ChatRoute(threadId = -1)
-        }
-    }
-}
+) : NavigateRoute
 
 private fun NavController.navigateToChat(route: ChatRoute) =
     navigate(route) {
@@ -40,12 +36,11 @@ private fun NavController.navigateToChat(route: ChatRoute) =
 
 fun GeminiChatNavGraphBuilder.chatNavGraph() {
     navigation<ChatNavGraph>(
-        startDestination = ChatRoute,
+        startDestination = ChatNavGraph.startDestination,
     ) {
         composable<ChatRoute> { _, chatRoute ->
             val drawerViewModel: DrawerViewModel =
                 hiltNavGraphViewModel(
-                    navController = navController,
                     navGraph = ChatNavGraph,
                 )
             ChatScreen(

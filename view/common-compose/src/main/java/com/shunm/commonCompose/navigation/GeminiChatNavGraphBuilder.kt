@@ -31,12 +31,12 @@ private data class GeminiChatNavGraphBuilderImpl(
     override val provider: NavGraphBuilder = innerBuilder
 }
 
-inline fun <reified T : NavigationRouteTemplate> GeminiChatNavGraphBuilder.navigation(
-    startDestination: NavigationRouteTemplate,
+inline fun <reified T : NavGraph> GeminiChatNavGraphBuilder.navigation(
+    startDestination: NavGraph.StartDestination,
     noinline builder: GeminiChatNavGraphBuilder.() -> Unit,
 ) {
     when (startDestination) {
-        is NavigationRouteTemplate.NoArgs -> {
+        is NavGraph.StartDestination.NoArgs<*> -> {
             provider.navigation<T>(
                 startDestination = startDestination.toRoute(),
                 builder = {
@@ -48,7 +48,7 @@ inline fun <reified T : NavigationRouteTemplate> GeminiChatNavGraphBuilder.navig
             )
         }
 
-        is NavigationRouteTemplate.WithArgs -> {
+        is NavGraph.StartDestination.WithArgs -> {
             provider.navigation<T>(
                 startDestination = startDestination.toRoute(),
                 builder = {
