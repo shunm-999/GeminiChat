@@ -34,7 +34,7 @@ internal class ChatViewModel @Inject constructor(
     private val createThreadUseCase: CreateThreadUseCase,
     private val createMessageUseCase: CreateMessageUseCase,
 ) : ViewModel(), ChatUiStateHolder {
-    private val route: ChatRoute by savedStateHandle.toNavigateRoute()
+    private val route: ChatRoute by savedStateHandle.toNavigateRoute<ChatRoute, ChatRoute.Args>()
 
     override var uiState: ChatUiState by mutableStateOf(ChatUiState.Loading)
         private set
@@ -42,7 +42,7 @@ internal class ChatViewModel @Inject constructor(
         private set
 
     init {
-        initialize(route.threadId)
+        initialize(route.args.threadId)
     }
 
     private fun initialize(threadId: ThreadId) {

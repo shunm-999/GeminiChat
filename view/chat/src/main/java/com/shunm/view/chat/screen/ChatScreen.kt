@@ -131,9 +131,7 @@ private fun DrawerContentScope.chatDrawerSheet(
                     onClick = {
                         selectThread(thread)
                         navigate(
-                            ChatRoute(
-                                threadId = thread.id,
-                            ),
+                            ChatRoute.withArgs(thread.id),
                         )
                     },
                 )

@@ -3,7 +3,15 @@ package com.shunm.commonCompose.navigation
 import android.os.Parcelable
 import kotlin.reflect.KClass
 
-interface NavigateRoute : Parcelable
+interface NavigateRouteArgs : Parcelable
+
+sealed interface NavigateRoute : Parcelable {
+    interface WithArgs<T : NavigateRouteArgs> : NavigateRoute {
+        val args: T
+    }
+
+    interface NoArgs : NavigateRoute
+}
 
 interface NavGraph : NavigateRoute {
     val startDestination: StartDestination<*>

@@ -4,6 +4,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.shunm.commonCompose.navigation.GeminiChatNavGraphBuilder
 import com.shunm.commonCompose.navigation.NavGraph
 import com.shunm.commonCompose.navigation.NavigateRoute
+import com.shunm.commonCompose.navigation.NavigateRouteArgs
 import com.shunm.commonCompose.navigation.StartDestination
 import com.shunm.commonCompose.navigation.composable
 import com.shunm.commonCompose.navigation.ext.hiltNavGraphViewModel
@@ -20,24 +21,33 @@ import kotlinx.serialization.Serializable
 @Serializable
 object ChatNavGraph : NavGraph {
     override val startDestination: StartDestination<ChatRoute>
-        get() = startDestinationWithArgs { ChatRoute(threadId = ThreadId.undefined) }
+        get() = startDestinationWithArgs { ChatRoute.newChat() }
 }
 
 @Parcelize
 @Serializable
 data class ChatRoute internal constructor(
-    val threadId: ThreadId,
-) : NavigateRoute {
+    override val args: Args,
+) : NavigateRoute.WithArgs<ChatRoute.Args> {
+
+    @Parcelize
+    @Serializable
+    data class Args(
+        val threadId: ThreadId,
+    ) : NavigateRouteArgs
+
     companion object {
-        fun newChat(): ChatRoute = ChatRoute(threadId = ThreadId.undefined)
+        fun withArgs(threadId: ThreadId): ChatRoute = ChatRoute(args = Args(threadId = threadId))
+
+        fun newChat(): ChatRoute = ChatRoute(args = Args(threadId = ThreadId.undefined))
     }
 }
 
 fun GeminiChatNavGraphBuilder.chatNavGraph() {
-    navigation<ChatNavGraph, ChatRoute>(
+    navigation<ChatNavGraph, ChatRoute, ChatRoute.Args>(
         startDestination = ChatNavGraph.startDestination,
     ) {
-        composable<ChatRoute> { _, _ ->
+        composable<ChatRoute, ChatRoute.Args> { _, _ ->
             val drawerViewModel: DrawerViewModel =
                 hiltNavGraphViewModel(
                     navGraph = ChatNavGraph,
@@ -48,6 +58,9 @@ fun GeminiChatNavGraphBuilder.chatNavGraph() {
                 navigate = { route ->
                     when (route) {
                         is ChatRoute -> navController.navigateSingleTop(route)
+                        else -> {
+                            navController.navigate(route)
+                        }
                     }
                 },
             )
