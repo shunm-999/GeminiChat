@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import kotlin.reflect.typeOf
 
 sealed interface GeminiChatNavGraphBuilder {
     val provider: NavGraphBuilder
@@ -31,14 +32,19 @@ private class GeminiChatNavGraphBuilderImpl(
     override val provider: NavGraphBuilder = innerBuilder
 }
 
-inline fun <reified T : NavGraph> GeminiChatNavGraphBuilder.navigation(
-    startDestination: StartDestination,
+inline fun <reified NG : NavGraph, reified SD : NavigateRoute> GeminiChatNavGraphBuilder.navigation(
+    startDestination: StartDestination<SD>,
     noinline builder: GeminiChatNavGraphBuilder.() -> Unit,
 ) {
+    val typeMap = mapOf(
+        typeOf<NG>() to parcelableNavType<NG>(),
+        typeOf<SD>() to parcelableNavType<SD>(),
+    )
     when (startDestination) {
         is StartDestination.NoArgs<*> -> {
-            provider.navigation<T>(
+            provider.navigation<NG>(
                 startDestination = startDestination.toRoute(),
+                typeMap = typeMap,
                 builder = {
                     GeminiChatNavGraphBuilder(
                         builder = this,
@@ -49,8 +55,9 @@ inline fun <reified T : NavGraph> GeminiChatNavGraphBuilder.navigation(
         }
 
         is StartDestination.WithArgs -> {
-            provider.navigation<T>(
+            provider.navigation<NG>(
                 startDestination = startDestination.toRoute(),
+                typeMap = typeMap,
                 builder = {
                     GeminiChatNavGraphBuilder(
                         builder = this,
@@ -66,6 +73,7 @@ inline fun <reified T : NavigateRoute> GeminiChatNavGraphBuilder.composable(
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry, T) -> Unit,
 ) {
     provider.composable<T>(
+        typeMap = mapOf(typeOf<T>() to parcelableNavType<T>()),
         content = { backStackEntry ->
             val route = backStackEntry.toRoute<T>()
             content(backStackEntry, route)

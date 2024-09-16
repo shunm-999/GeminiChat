@@ -6,43 +6,44 @@ import com.shunm.commonCompose.navigation.NavGraph
 import com.shunm.commonCompose.navigation.NavigateRoute
 import com.shunm.commonCompose.navigation.StartDestination
 import com.shunm.commonCompose.navigation.composable
-import com.shunm.commonCompose.navigation.hiltNavGraphViewModel
-import com.shunm.commonCompose.navigation.navigateSingleTop
+import com.shunm.commonCompose.navigation.ext.hiltNavGraphViewModel
+import com.shunm.commonCompose.navigation.ext.navigateSingleTop
 import com.shunm.commonCompose.navigation.navigation
 import com.shunm.commonCompose.navigation.startDestinationWithArgs
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.screen.ChatScreen
-import com.shunm.view.chat.viewmodel.ChatViewModelFactory
 import com.shunm.view.chat.viewmodel.DrawerViewModel
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
+@Parcelize
 @Serializable
 object ChatNavGraph : NavGraph {
-    override val startDestination: StartDestination = startDestinationWithArgs {
-        ChatRoute(threadId = -1)
+    override val startDestination: StartDestination<ChatRoute>
+        get() = startDestinationWithArgs { ChatRoute(threadId = ThreadId.undefined) }
+}
+
+@Parcelize
+@Serializable
+data class ChatRoute internal constructor(
+    val threadId: ThreadId,
+) : NavigateRoute {
+    companion object {
+        fun newChat(): ChatRoute = ChatRoute(threadId = ThreadId.undefined)
     }
 }
 
-@Serializable
-data class ChatRoute internal constructor(
-    val threadId: Long,
-) : NavigateRoute
-
 fun GeminiChatNavGraphBuilder.chatNavGraph() {
-    navigation<ChatNavGraph>(
+    navigation<ChatNavGraph, ChatRoute>(
         startDestination = ChatNavGraph.startDestination,
     ) {
-        composable<ChatRoute> { _, chatRoute ->
+        composable<ChatRoute> { _, _ ->
             val drawerViewModel: DrawerViewModel =
                 hiltNavGraphViewModel(
                     navGraph = ChatNavGraph,
                 )
             ChatScreen(
-                viewModel = hiltViewModel(
-                    creationCallback = { factory: ChatViewModelFactory ->
-                        factory.create(ThreadId(chatRoute.threadId))
-                    },
-                ),
+                viewModel = hiltViewModel(),
                 drawerUiStateHolder = drawerViewModel,
                 navigate = { route ->
                     when (route) {

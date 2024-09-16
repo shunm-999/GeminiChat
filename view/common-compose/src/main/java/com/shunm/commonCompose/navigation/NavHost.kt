@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 fun GeminiChatNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: StartDestination,
+    startDestination: StartDestination<*>,
     builder: GeminiChatNavGraphBuilder.() -> Unit,
 ) {
     when (startDestination) {
@@ -27,7 +27,7 @@ fun GeminiChatNavHost(
             )
         }
 
-        is StartDestination.WithArgs -> {
+        is StartDestination.WithArgs<*> -> {
             NavHost(
                 navController = navController,
                 startDestination = startDestination.toRoute(),

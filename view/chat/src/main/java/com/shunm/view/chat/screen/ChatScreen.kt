@@ -26,7 +26,6 @@ import com.shunm.commonCompose.navigation.NavigateRoute
 import com.shunm.commonCompose.theme.GeminiChatTheme
 import com.shunm.commonCompose.util.rememberDocumentMediaSelector
 import com.shunm.commonCompose.util.rememberPhotoPicker
-import com.shunm.domain.chat.model.ThreadId
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
 import com.shunm.view.camera.util.LocalCameraManager
@@ -43,7 +42,6 @@ import com.shunm.view.chat.uiState.ChatUiStateHolder
 import com.shunm.view.chat.uiState.DrawerUiStateHolder
 import com.shunm.view.chat.uiState.messageList
 import com.shunm.view.chat.viewmodel.ChatViewModel
-import com.shunm.view.chat.viewmodel.ChatViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
@@ -59,7 +57,6 @@ internal fun ChatScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ChatScreen(
     uiStateHolder: ChatUiStateHolder,
@@ -119,9 +116,7 @@ private fun DrawerContentScope.chatDrawerSheet(
         CreateThreadButton {
             closeDrawer {
                 navigate(
-                    ChatRoute(
-                        threadId = -1,
-                    ),
+                    ChatRoute.newChat(),
                 )
             }
         }
@@ -137,7 +132,7 @@ private fun DrawerContentScope.chatDrawerSheet(
                         selectThread(thread)
                         navigate(
                             ChatRoute(
-                                threadId = thread.id.value,
+                                threadId = thread.id,
                             ),
                         )
                     },
@@ -263,11 +258,7 @@ internal fun ChatScreenPreview() {
     GeminiChatTheme {
         Surface {
             ChatScreen(
-                hiltViewModel(
-                    creationCallback = { factory: ChatViewModelFactory ->
-                        factory.create(ThreadId(1))
-                    },
-                ),
+                hiltViewModel(),
                 drawerUiStateHolder = DrawerUiStateHolder(),
                 navigate = {
                 },

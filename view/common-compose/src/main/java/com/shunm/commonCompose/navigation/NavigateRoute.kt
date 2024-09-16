@@ -1,16 +1,17 @@
 package com.shunm.commonCompose.navigation
 
+import android.os.Parcelable
 import kotlin.reflect.KClass
 
-interface NavigateRoute
+interface NavigateRoute : Parcelable
 
 interface NavGraph : NavigateRoute {
-    val startDestination: StartDestination
+    val startDestination: StartDestination<*>
 }
 
-inline fun startDestinationWithArgs(crossinline toRoute: () -> NavigateRoute): StartDestination.WithArgs {
-    return object : StartDestination.WithArgs {
-        override fun toRoute(): NavigateRoute {
+inline fun <T : NavigateRoute> startDestinationWithArgs(crossinline toRoute: () -> T): StartDestination.WithArgs<T> {
+    return object : StartDestination.WithArgs<T> {
+        override fun toRoute(): T {
             return toRoute()
         }
     }
@@ -24,14 +25,14 @@ inline fun <reified T : NavigateRoute> startDestinationNoArgs(): StartDestinatio
     }
 }
 
-sealed interface StartDestination : NavigateRoute {
+sealed interface StartDestination<T : NavigateRoute> {
     fun toRoute(): Any
 
-    interface WithArgs : StartDestination {
-        override fun toRoute(): NavigateRoute
+    interface WithArgs<T : NavigateRoute> : StartDestination<T> {
+        override fun toRoute(): T
     }
 
-    interface NoArgs<T : NavigateRoute> : StartDestination {
+    interface NoArgs<T : NavigateRoute> : StartDestination<T> {
         override fun toRoute(): KClass<T>
     }
 }

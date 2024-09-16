@@ -34,6 +34,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
                 apply("kotlinx-serialization")
+                apply("kotlin-parcelize")
                 apply("geminiChat.android.lint")
             }
 
