@@ -3,8 +3,10 @@ package com.shunm.view.chat.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shunm.commonCompose.navigation.ext.toNavigateRoute
 import com.shunm.domain.chat.inputData.MessageCreation
 import com.shunm.domain.chat.inputData.ThreadCreation
 import com.shunm.domain.chat.model.Message
@@ -15,36 +17,35 @@ import com.shunm.domain.chat.usecase.GetThreadDetailUseCase
 import com.shunm.domain.common.ext.format
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
+import com.shunm.view.chat.navigation.ChatRoute
 import com.shunm.view.chat.uiState.ChatInputUiState
 import com.shunm.view.chat.uiState.ChatUiState
 import com.shunm.view.chat.uiState.ChatUiStateHolder
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = ChatViewModelFactory::class)
-internal class ChatViewModel
-@AssistedInject
-constructor(
-    @Assisted private val threadId: ThreadId,
+@HiltViewModel
+internal class ChatViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getThreadDetailUseCase: GetThreadDetailUseCase,
     private val createThreadUseCase: CreateThreadUseCase,
     private val createMessageUseCase: CreateMessageUseCase,
 ) : ViewModel(), ChatUiStateHolder {
+    private val route: ChatRoute by savedStateHandle.toNavigateRoute<ChatRoute, ChatRoute.Args>()
+
     override var uiState: ChatUiState by mutableStateOf(ChatUiState.Loading)
         private set
     override var inputUiState: ChatInputUiState by mutableStateOf(ChatInputUiState.Empty)
         private set
 
     init {
-        loadThread(threadId)
+        initialize(route.args.threadId)
     }
 
-    private fun loadThread(threadId: ThreadId) {
+    private fun initialize(threadId: ThreadId) {
         if (threadId.value == -1L) {
             uiState = ChatUiState.Reedy.Initial
         } else {
@@ -86,7 +87,7 @@ constructor(
                             )
                         when (result) {
                             is Ok -> {
-                                loadThread(result.value)
+                                initialize(result.value)
                                 result.value
                             }
 
@@ -96,6 +97,7 @@ constructor(
                             }
                         }
                     }
+
                     is ChatUiState.Reedy.Content -> {
                         currentUiState.threadDetail.id
                     }
@@ -119,9 +121,4 @@ constructor(
             inputUiState = ChatInputUiState.Empty
         }
     }
-}
-
-@AssistedFactory
-internal interface ChatViewModelFactory {
-    fun create(threadId: ThreadId): ChatViewModel
 }

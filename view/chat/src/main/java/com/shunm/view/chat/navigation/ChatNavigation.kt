@@ -1,63 +1,66 @@
 package com.shunm.view.chat.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.composable
 import com.shunm.commonCompose.navigation.GeminiChatNavGraphBuilder
 import com.shunm.commonCompose.navigation.NavGraph
 import com.shunm.commonCompose.navigation.NavigateRoute
-import com.shunm.commonCompose.navigation.NavigationRouteTemplate
+import com.shunm.commonCompose.navigation.NavigateRouteArgs
+import com.shunm.commonCompose.navigation.StartDestination
 import com.shunm.commonCompose.navigation.composable
-import com.shunm.commonCompose.navigation.hiltNavGraphViewModel
+import com.shunm.commonCompose.navigation.ext.hiltNavGraphViewModel
+import com.shunm.commonCompose.navigation.ext.navigateSingleTop
 import com.shunm.commonCompose.navigation.navigation
+import com.shunm.commonCompose.navigation.startDestinationWithArgs
 import com.shunm.domain.chat.model.ThreadId
 import com.shunm.view.chat.screen.ChatScreen
-import com.shunm.view.chat.viewmodel.ChatViewModelFactory
 import com.shunm.view.chat.viewmodel.DrawerViewModel
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
+@Parcelize
 @Serializable
-object ChatNavGraph : NavGraph, NavigationRouteTemplate.NoArgs
+object ChatNavGraph : NavGraph {
+    override val startDestination: StartDestination<ChatRoute>
+        get() = startDestinationWithArgs { ChatRoute.newChat() }
+}
 
+@Parcelize
 @Serializable
 data class ChatRoute internal constructor(
-    val threadId: Long,
-) : NavigateRoute {
+    override val args: Args,
+) : NavigateRoute.WithArgs<ChatRoute.Args> {
 
-    companion object : NavigationRouteTemplate.WithArgs {
-        override fun toRoute(): Any {
-            return ChatRoute(threadId = -1)
-        }
+    @Parcelize
+    @Serializable
+    data class Args(
+        val threadId: ThreadId,
+    ) : NavigateRouteArgs
+
+    companion object {
+        fun withArgs(threadId: ThreadId): ChatRoute = ChatRoute(args = Args(threadId = threadId))
+
+        fun newChat(): ChatRoute = ChatRoute(args = Args(threadId = ThreadId.undefined))
     }
 }
 
-private fun NavController.navigateToChat(route: ChatRoute) =
-    navigate(route) {
-        popUpTo<ChatRoute> {
-            inclusive = true
-        }
-    }
-
 fun GeminiChatNavGraphBuilder.chatNavGraph() {
-    navigation<ChatNavGraph>(
-        startDestination = ChatRoute,
+    navigation<ChatNavGraph, ChatRoute, ChatRoute.Args>(
+        startDestination = ChatNavGraph.startDestination,
     ) {
-        composable<ChatRoute> { _, chatRoute ->
+        composable<ChatRoute, ChatRoute.Args> { _, _ ->
             val drawerViewModel: DrawerViewModel =
                 hiltNavGraphViewModel(
-                    navController = navController,
                     navGraph = ChatNavGraph,
                 )
             ChatScreen(
-                viewModel = hiltViewModel(
-                    creationCallback = { factory: ChatViewModelFactory ->
-                        factory.create(ThreadId(chatRoute.threadId))
-                    },
-                ),
+                viewModel = hiltViewModel(),
                 drawerUiStateHolder = drawerViewModel,
                 navigate = { route ->
                     when (route) {
-                        is ChatRoute -> navController.navigateToChat(route)
+                        is ChatRoute -> navController.navigateSingleTop(route)
+                        else -> {
+                            navController.navigate(route)
+                        }
                     }
                 },
             )
