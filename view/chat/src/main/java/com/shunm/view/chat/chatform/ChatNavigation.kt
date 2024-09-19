@@ -12,6 +12,7 @@ import com.shunm.commonCompose.navigation.ext.navigateSingleTop
 import com.shunm.commonCompose.navigation.navigation
 import com.shunm.commonCompose.navigation.startDestinationWithArgs
 import com.shunm.domain.chat.model.ThreadId
+import com.shunm.view.chat.chatform.model_detail.modelDetailNavigation
 import com.shunm.view.chat.chatform.screen.ChatScreen
 import com.shunm.view.chat.viewmodel.DrawerViewModel
 import kotlinx.parcelize.Parcelize
@@ -65,5 +66,6 @@ fun GeminiChatNavGraphBuilder.chatNavGraph() {
                 },
             )
         }
+        modelDetailNavigation()
     }
 }
