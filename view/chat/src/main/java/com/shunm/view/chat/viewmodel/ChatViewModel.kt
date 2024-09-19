@@ -17,10 +17,10 @@ import com.shunm.domain.chat.usecase.GetThreadDetailUseCase
 import com.shunm.domain.common.ext.format
 import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
-import com.shunm.view.chat.navigation.ChatRoute
-import com.shunm.view.chat.uiState.ChatInputUiState
-import com.shunm.view.chat.uiState.ChatUiState
-import com.shunm.view.chat.uiState.ChatUiStateHolder
+import com.shunm.view.chat.chatform.ChatRoute
+import com.shunm.view.chat.chatform.uiState.ChatInputUiState
+import com.shunm.view.chat.chatform.uiState.ChatUiState
+import com.shunm.view.chat.chatform.uiState.ChatUiStateHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

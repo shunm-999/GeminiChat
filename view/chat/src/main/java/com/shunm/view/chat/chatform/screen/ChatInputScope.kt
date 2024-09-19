@@ -1,9 +1,9 @@
-package com.shunm.view.chat.screen
+package com.shunm.view.chat.chatform.screen
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.shunm.view.chat.uiState.ChatUiStateHolder
+import com.shunm.view.chat.chatform.uiState.ChatUiStateHolder
 
 @Composable
 internal fun ChatInputScope(

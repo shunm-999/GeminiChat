@@ -1,4 +1,4 @@
-package com.shunm.view.chat.uiState
+package com.shunm.view.chat.chatform.uiState
 
 import android.net.Uri
 import com.shunm.domain.chat.model.Message

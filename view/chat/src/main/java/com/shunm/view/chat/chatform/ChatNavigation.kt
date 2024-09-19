@@ -1,4 +1,4 @@
-package com.shunm.view.chat.navigation
+package com.shunm.view.chat.chatform
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shunm.commonCompose.navigation.GeminiChatNavGraphBuilder
@@ -12,7 +12,7 @@ import com.shunm.commonCompose.navigation.ext.navigateSingleTop
 import com.shunm.commonCompose.navigation.navigation
 import com.shunm.commonCompose.navigation.startDestinationWithArgs
 import com.shunm.domain.chat.model.ThreadId
-import com.shunm.view.chat.screen.ChatScreen
+import com.shunm.view.chat.chatform.screen.ChatScreen
 import com.shunm.view.chat.viewmodel.DrawerViewModel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable

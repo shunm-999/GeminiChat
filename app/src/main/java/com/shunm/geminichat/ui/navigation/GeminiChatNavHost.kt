@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.shunm.commonCompose.navigation.GeminiChatNavHost
 import com.shunm.commonCompose.navigation.startDestinationNoArgs
-import com.shunm.view.chat.navigation.ChatNavGraph
-import com.shunm.view.chat.navigation.chatNavGraph
+import com.shunm.view.chat.chatform.ChatNavGraph
+import com.shunm.view.chat.chatform.chatNavGraph
 
 @Composable
 internal fun GeminiChatNavHost(modifier: Modifier = Modifier) {

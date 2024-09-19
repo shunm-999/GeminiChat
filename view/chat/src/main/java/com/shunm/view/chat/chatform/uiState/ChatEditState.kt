@@ -1,4 +1,4 @@
-package com.shunm.view.chat.uiState
+package com.shunm.view.chat.chatform.uiState
 
 internal sealed interface ChatEditState {
     data object NewThread : ChatEditState

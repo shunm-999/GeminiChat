@@ -1,4 +1,4 @@
-package com.shunm.view.chat.screen
+package com.shunm.view.chat.chatform.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +30,9 @@ import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
 import com.shunm.view.camera.util.LocalCameraManager
 import com.shunm.view.chat.R
+import com.shunm.view.chat.chatform.ChatRoute
+import com.shunm.view.chat.chatform.uiState.ChatUiStateHolder
+import com.shunm.view.chat.chatform.uiState.messageList
 import com.shunm.view.chat.components.ChatInputField
 import com.shunm.view.chat.components.MessageList
 import com.shunm.view.chat.layouts.ChatNavigationDrawerContentScope
@@ -37,10 +40,7 @@ import com.shunm.view.chat.layouts.ChatNavigationLayout
 import com.shunm.view.chat.layouts.CreateThreadButton
 import com.shunm.view.chat.layouts.DrawerContentScope
 import com.shunm.view.chat.layouts.NavigationItem
-import com.shunm.view.chat.navigation.ChatRoute
-import com.shunm.view.chat.uiState.ChatUiStateHolder
 import com.shunm.view.chat.uiState.DrawerUiStateHolder
-import com.shunm.view.chat.uiState.messageList
 import com.shunm.view.chat.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 
