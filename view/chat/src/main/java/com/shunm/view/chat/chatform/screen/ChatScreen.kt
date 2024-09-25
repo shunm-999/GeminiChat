@@ -1,4 +1,4 @@
-package com.shunm.view.chat.screen
+package com.shunm.view.chat.chatform.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,11 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shunm.commonCompose.components.DropdownMenu
+import com.shunm.commonCompose.components.DropdownMenuItem
 import com.shunm.commonCompose.layouts.GeminiScaffold
 import com.shunm.commonCompose.navigation.NavigateRoute
 import com.shunm.commonCompose.theme.GeminiChatTheme
@@ -30,6 +36,11 @@ import com.shunm.domain.common.model.Err
 import com.shunm.domain.common.model.Ok
 import com.shunm.view.camera.util.LocalCameraManager
 import com.shunm.view.chat.R
+import com.shunm.view.chat.chatform.ChatRoute
+import com.shunm.view.chat.chatform.model_detail.ModelDetailRoute
+import com.shunm.view.chat.chatform.uiState.ChatUiStateHolder
+import com.shunm.view.chat.chatform.uiState.ChatViewModel
+import com.shunm.view.chat.chatform.uiState.messageList
 import com.shunm.view.chat.components.ChatInputField
 import com.shunm.view.chat.components.MessageList
 import com.shunm.view.chat.layouts.ChatNavigationDrawerContentScope
@@ -37,11 +48,7 @@ import com.shunm.view.chat.layouts.ChatNavigationLayout
 import com.shunm.view.chat.layouts.CreateThreadButton
 import com.shunm.view.chat.layouts.DrawerContentScope
 import com.shunm.view.chat.layouts.NavigationItem
-import com.shunm.view.chat.navigation.ChatRoute
-import com.shunm.view.chat.uiState.ChatUiStateHolder
 import com.shunm.view.chat.uiState.DrawerUiStateHolder
-import com.shunm.view.chat.uiState.messageList
-import com.shunm.view.chat.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -89,6 +96,7 @@ internal fun ChatScreen(
                             drawerState.open()
                         }
                     },
+                    navigate = navigate,
                 )
             },
         ) {
@@ -142,7 +150,10 @@ private fun DrawerContentScope.chatDrawerSheet(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun ChatNavigationDrawerContentScope.ChatTopBar(openDrawer: () -> Unit) {
+private fun ChatNavigationDrawerContentScope.ChatTopBar(
+    openDrawer: () -> Unit,
+    navigate: (NavigateRoute) -> Unit,
+) {
     TopAppBar(
         title = {
             Text(
@@ -160,17 +171,37 @@ private fun ChatNavigationDrawerContentScope.ChatTopBar(openDrawer: () -> Unit) 
             }
         },
         actions = {
+            var menuExpanded by remember {
+                mutableStateOf(false)
+            }
             IconButton(onClick = {}) {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = null,
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                menuExpanded = true
+            }) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = null,
                 )
+            }
+            DropdownMenu(
+                expanded = menuExpanded,
+                onDismissRequest = {
+                    menuExpanded = false
+                }
+            ) {
+                item {
+                    DropdownMenuItem(
+                        text = "詳細を表示する",
+                        onClick = {
+                            navigate(ModelDetailRoute)
+                        }
+                    )
+                }
             }
         },
     )

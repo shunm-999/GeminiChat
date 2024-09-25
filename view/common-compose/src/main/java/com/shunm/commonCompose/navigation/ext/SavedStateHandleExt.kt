@@ -12,7 +12,7 @@ import kotlin.reflect.typeOf
 @JvmName("toNavigateRouteNoArgs")
 inline fun <reified NR : NavigateRoute.NoArgs> SavedStateHandle.toNavigateRoute(): Lazy<NR> {
     return toNavigateRoute(
-        typeMap = emptyMap()
+        typeMap = emptyMap(),
     )
 }
 
@@ -24,7 +24,7 @@ inline fun <reified NR : NavigateRoute.WithArgs<NRA>, reified NRA : NavigateRout
 }
 
 inline fun <reified NR : NavigateRoute> SavedStateHandle.toNavigateRoute(
-    typeMap: Map<KType, @JvmSuppressWildcards NavType<*>>
+    typeMap: Map<KType, @JvmSuppressWildcards NavType<*>>,
 ): Lazy<NR> {
     return lazy {
         this.toRoute<NR>(
